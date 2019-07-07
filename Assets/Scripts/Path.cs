@@ -5,9 +5,22 @@ using System.Linq;
 
 public class Path : MonoBehaviour
 {
+    //Public
     public Transform[] Points;
+    //Private
     private LineRenderer lineRenderer;
-    EdgeCollider2D edgeCollider;
+    private EdgeCollider2D edgeCollider;
+
+    # region Events
+    public event TriggerEventHandler TriggerEnter;
+
+    private void RaiseTriggerEnter()
+    {
+        if (TriggerEnter != null)
+            TriggerEnter(this, null);
+    }
+
+    #endregion
 
     void Awake()
     {
@@ -31,6 +44,11 @@ public class Path : MonoBehaviour
             if(Points[i] != null && Points[i+1] != null)
                 Gizmos.DrawLine(Points[i].position, Points[i + 1].position);
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        RaiseTriggerEnter();
     }
 
 }
