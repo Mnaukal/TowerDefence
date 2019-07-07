@@ -12,12 +12,18 @@ public class Path : MonoBehaviour
     private EdgeCollider2D edgeCollider;
 
     # region Events
-    public event TriggerEventHandler TriggerEnter;
+    public event TriggerEnterEventHandler TriggerEnter;
+    public event TriggerExitEventHandler TriggerExit;
 
-    private void RaiseTriggerEnter()
+    private void RaiseTriggerEnter(Collider2D collision)
     {
         if (TriggerEnter != null)
-            TriggerEnter(this, null);
+            TriggerEnter(this, new TriggerEventArgs(collision));
+    }
+    private void RaiseTriggerExit(Collider2D collision)
+    {
+        if (TriggerExit != null)
+            TriggerExit(this, new TriggerEventArgs(collision));
     }
 
     #endregion
@@ -48,7 +54,12 @@ public class Path : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        RaiseTriggerEnter();
+        RaiseTriggerEnter(collision);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        RaiseTriggerExit(collision);
     }
 
 }

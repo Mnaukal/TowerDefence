@@ -28,5 +28,7 @@ public class GameControllerS : MonoBehaviour
     }
 
     // Links to GameObjects
-    public GameObject Path;
+    public Path Path;
+    public EventManager EventManager;
+    public GameObject TowersParent;
 }

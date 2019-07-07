@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour
 
     private void Awake()
     {
-        path = GameControllerS.I.Path.GetComponent<Path>();
+        path = GameControllerS.I.Path;
     }
 
     private void Start()
