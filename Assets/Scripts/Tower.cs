@@ -8,7 +8,9 @@ public abstract class Tower : MonoBehaviour
     public float ReloadTime = 1f;
     public float Range = 3f;
     public Projectile Projectile;
+    public GameObject TowerRange;
 
+    private bool selected = false;
     private float timer = 0f;
 
     private void Start()
@@ -46,4 +48,28 @@ public abstract class Tower : MonoBehaviour
     }
 
     protected abstract void Shoot();
+
+    private void OnMouseDown()
+    {
+        Select();
+    }
+
+    void Select()
+    {
+        selected = true;
+        TowerRange.SetActive(true);
+        GameControllerS.I.EventManager.PointerDown += EventManager_PointerDown;
+    }
+
+    private void EventManager_PointerDown(object sender, PointerEventArgs args)
+    {
+        Deselect();
+    }
+
+    void Deselect()
+    {
+        selected = false;
+        TowerRange.SetActive(false);
+        GameControllerS.I.EventManager.PointerDown -= EventManager_PointerDown;
+    }
 }

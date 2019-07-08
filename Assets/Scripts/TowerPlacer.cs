@@ -10,12 +10,13 @@ public class TowerPlacer : MonoBehaviour
 
     private EventManager eventManager;
     private new SpriteRenderer renderer;
+    private int collisionCounter = 0;
 
     private void Awake()
     {
         eventManager = GameControllerS.I.EventManager;
-        GameControllerS.I.Path.TriggerEnter += Path_TriggerEnter;
-        GameControllerS.I.Path.TriggerExit += Path_TriggerExit;
+        //GameControllerS.I.Path.TriggerEnter += Path_TriggerEnter;
+        //GameControllerS.I.Path.TriggerExit += Path_TriggerExit;
         renderer = GetComponent<SpriteRenderer>();
     }
 
@@ -36,6 +37,25 @@ public class TowerPlacer : MonoBehaviour
         Vector3 newPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         newPos.z = 0;
         transform.position = newPos;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.gameObject.CompareTag("Tower"))
+        {
+            collisionCounter++;
+            DisablePlacement();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.gameObject.CompareTag("Tower"))
+        {
+            collisionCounter--;
+            if(collisionCounter == 0)
+                EnablePlacement();
+        }
     }
 
     void EnablePlacement()

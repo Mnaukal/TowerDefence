@@ -25,12 +25,22 @@ public class EventManager : MonoBehaviour
 
     }
 
+    private void OnMouseDown()
+    {
+        RaisePointerDown();
+    }
+
+    private void OnMouseUp()
+    {
+        RaisePointerUp();
+    }
+
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        /*if (Input.GetMouseButtonDown(0))
             RaisePointerDown();
         if (Input.GetMouseButtonUp(0))
-            RaisePointerUp();
+            RaisePointerUp();*/
     }
 
 }
