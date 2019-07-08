@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SimpleTower : Tower
 {
-    public float fireForce = 1f;
+    public float fireForce = 0.05f;
 
     protected override void Shoot()
     {
