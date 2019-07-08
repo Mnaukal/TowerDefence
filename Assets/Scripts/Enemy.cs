@@ -6,7 +6,8 @@ using System;
 public class Enemy : MonoBehaviour
 {
     // Public
-    public float speed = 1f;
+    public float Speed = 1f;
+    public float Health = 3f;
     // Private
     private Path path;
     private int pathNodeProgress = 0;
@@ -44,7 +45,7 @@ public class Enemy : MonoBehaviour
 
     void MoveEnemy()
     {
-        float distDelta = Time.deltaTime * speed;
+        float distDelta = Time.deltaTime * Speed;
         pathProgress += distDelta / segmentLength;
         if (pathProgress >= 1)
             SetupSegment(pathNodeProgress + 1); // TODO event?
@@ -81,9 +82,38 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // Enemy collision
         Enemy e = collision.gameObject.GetComponent<Enemy>();
-        if (e == null)
-            return;
+        if (e != null) 
+            CollisionEnterEnemy(e);
+
+        // Projectile collision
+        Projectile p = collision.gameObject.GetComponent<Projectile>();
+        if (p != null)
+            CollisionEnterProjectile(p);
+    }
+
+    private void CollisionEnterProjectile(Projectile p)
+    {
+        Hit(p.Damage);
+        p.DestroyMe();
+    }
+
+    private void Hit(float damage)
+    {
+        Health -= damage;
+        if (Health <= 0)
+            Die();
+    }
+
+    private void Die()
+    {
+        Debug.Log("Dying");
+        Destroy(this.gameObject);
+    }
+
+    private void CollisionEnterEnemy(Enemy e)
+    {
         if (e.GetTotalProgress() > this.GetTotalProgress())
         {
             waiting = true;
@@ -94,8 +124,12 @@ public class Enemy : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision)
     {
         Enemy e = collision.gameObject.GetComponent<Enemy>();
-        if (e == null)
-            return;
+        if (e != null)
+            CollisionExitEnemy(e);
+    }
+
+    private void CollisionExitEnemy(Enemy e)
+    {
         waitingFor.Remove(e);
         if (waitingFor.Count == 0)
             waiting = false;
@@ -109,5 +143,25 @@ public class Enemy : MonoBehaviour
     public float GetTotalProgress()
     {
         return pathNodeProgress + pathProgress;
+    }
+}
+
+class EnemyTotalProgressComparer : IComparer<Enemy>
+{
+    Comparer<float> comparer;
+
+    public EnemyTotalProgressComparer(Comparer<float> comparer)
+    {
+        this.comparer = comparer;
+    }
+
+    public EnemyTotalProgressComparer()
+    {
+        comparer = Comparer<float>.Default;
+    }
+
+    public int Compare(Enemy x, Enemy y)
+    {
+        return comparer.Compare(x.GetTotalProgress(), y.GetTotalProgress());
     }
 }
