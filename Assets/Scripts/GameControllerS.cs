@@ -31,5 +31,7 @@ public class GameControllerS : MonoBehaviour
     public Path Path;
     public EventManager EventManager;
     public GameObject TowersParent;
+    public GameObject EnemiesParent;
     public GameObject ProjectileParent;
+    public WaveController WaveController;
 }

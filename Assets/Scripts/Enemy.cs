@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     // Public
     public float Speed = 1f;
     public int Health = 3;
+    public int Reward = 1;
     public Healthbar Healthbar;
     public Transform Sprite;
     // Private
@@ -35,16 +36,20 @@ public class Enemy : MonoBehaviour
     }
     #endregion
 
+    public void SetupEnemy(float speed, int health, int reward)
+    {
+        Speed = speed;
+        Health = health;
+        Reward = reward;
+
+        SetupSegment(0);
+        Healthbar.SetMax(Health);
+        EnemyHit += Healthbar.EnemyHit;
+    }
+
     private void Awake()
     {
         path = GameControllerS.I.Path;
-    }
-
-    private void Start()
-    {
-        SetupSegment(0);
-        Healthbar.SetMax(Health); // TODO fix, Health will be set up too late
-        EnemyHit += Healthbar.EnemyHit;
     }
 
     private void Update()
