@@ -7,7 +7,9 @@ public class Enemy : MonoBehaviour
 {
     // Public
     public float Speed = 1f;
-    public float Health = 3f;
+    public int Health = 3;
+    public Healthbar Healthbar;
+    public Transform Sprite;
     // Private
     private Path path;
     private int pathNodeProgress = 0;
@@ -18,6 +20,7 @@ public class Enemy : MonoBehaviour
 
     #region Events
     public event EnemyFinishedEventHandler EnemyFinished;
+    public event EnemyHitEventHandler EnemyHit;
 
     private void RaiseEnemyFinished()
     {
@@ -25,6 +28,11 @@ public class Enemy : MonoBehaviour
             EnemyFinished(this, new EnemyFinishedEventArgs(this));
     }
 
+    private void RaiseEnemyHit(int damage)
+    {
+        if (EnemyHit != null)
+            EnemyHit(this, new EnemyHitEventArgs(this, damage, Health));
+    }
     #endregion
 
     private void Awake()
@@ -35,6 +43,8 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         SetupSegment(0);
+        Healthbar.SetMax(Health); // TODO fix, Health will be set up too late
+        EnemyHit += Healthbar.EnemyHit;
     }
 
     private void Update()
@@ -71,11 +81,11 @@ public class Enemy : MonoBehaviour
     private IEnumerator LookAtNextNode()
     {
         Vector2 newRight = path.Points[pathNodeProgress + 1].position - transform.position;
-        Vector2 currentRight = transform.right;
+        Vector2 currentRight = Sprite.right;
 
         for (float i = 0; i <= 1; i += Time.deltaTime / 0.3f)
         {
-            transform.right = Vector2.Lerp(currentRight, newRight, i);
+            Sprite.right = Vector2.Lerp(currentRight, newRight, i);
             yield return new WaitForEndOfFrame();
         }
     }
@@ -99,11 +109,12 @@ public class Enemy : MonoBehaviour
         p.DestroyMe();
     }
 
-    private void Hit(float damage)
+    private void Hit(int damage)
     {
         Health -= damage;
         if (Health <= 0)
             Die();
+        RaiseEnemyHit(damage);
     }
 
     private void Die()

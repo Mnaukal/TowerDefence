@@ -5,7 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public float TimeToLive = 0f;
-    public float Damage = 1f;
+    public int Damage = 1;
 
     private void Update()
     {
