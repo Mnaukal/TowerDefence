@@ -56,26 +56,44 @@ public class WaveItem
     /// </summary>
     public int Count;
 
-    public WaveItem(float timeDelay, float timeBetween, Enemy enemyType, int enemyHealth, int reward, float speed)
+    /// <summary>
+    /// Creates new WaveItem
+    /// </summary>
+    /// <param name="timeDelay">Seconds before first enemy of this batch will be spawned, relative to last spawned batch (WaveItem)</param>
+    /// <param name="timeBetween">Seconds of delay between spawning enemies of this batch (WaveItem)</param>
+    /// <param name="enemyType">Type of enemy spawned in this batch</param>
+    /// <param name="enemyHealth">HP every enemy in this batch will have</param>
+    /// <param name="reward">Reward money given for killing each enemy in batch</param>
+    /// <param name="speed">Speed of every enemy in batch</param>
+    /// <param name="count">Number of enemies spawned in this batch</param>
+    public WaveItem(float timeDelay, float timeBetween, Enemy enemyType, int enemyHealth, int reward, float speed, int count = 1)
     {
+        if(timeDelay < 0)
+            throw new System.ArgumentException("Time can't be negative.", nameof(timeDelay));
         TimeDelay = timeDelay;
-        TimeBetween = timeBetween;
-        EnemyType = enemyType;
-        EnemyHealth = enemyHealth;
-        Reward = reward;
-        Speed = speed;
-    }
 
-    public WaveItem(float timeDelay, float timeBetween, Enemy enemyType, int enemyHealth, int reward, float speed, int count)
-    {
-        TimeDelay = timeDelay;
+        if(timeBetween < 0)
+            throw new System.ArgumentException("Time can't be negative.", nameof(timeBetween));
         TimeBetween = timeBetween;
+
+        if (enemyType == null)
+            throw new System.ArgumentNullException(nameof(enemyType));
         EnemyType = enemyType;
+
+        if (enemyHealth <= 0)
+            throw new System.ArgumentException("Health must be positive.", nameof(enemyHealth));
         EnemyHealth = enemyHealth;
+
+        if (reward < 0)
+            throw new System.ArgumentException("Reward can't be negative.", nameof(reward));
         Reward = reward;
+
+        if(speed <= 0)
+            throw new System.ArgumentException("Speed must be positive.", nameof(speed));
         Speed = speed;
+
         if (count <= 0)
-            throw new System.ArgumentException("WaveItem must spawn at least one enemy.");
+            throw new System.ArgumentException("WaveItem must spawn at least one enemy.", nameof(count));
         Count = count;
     }
 }

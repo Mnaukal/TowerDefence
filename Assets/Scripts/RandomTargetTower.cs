@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Tower which shoots at random enemy in range
+/// </summary>
 public class RandomTargetTower : SimpleTower
 {
     /// <summary>

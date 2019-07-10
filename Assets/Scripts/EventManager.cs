@@ -2,28 +2,56 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class for calling global events
+/// </summary>
 public class EventManager : MonoBehaviour
 {
+    #region Game area events
+    /// <summary>
+    /// Called when user presses mouse button with mouse on game area; event can be blocked by an element in front (collider)
+    /// </summary>
     public event PointerDownEventHandler PointerDown;
+    /// <summary>
+    /// Called when user raises mouse button with mouse on game area; event can be blocked by an element in front (collider)
+    /// </summary>
     public event PointerUpEventHandler PointerUp;
 
     private void RaisePointerDown()
     {
         if (PointerDown != null)
-            PointerDown(this, null);
+            PointerDown(this, new PointerEventArgs(Input.mousePosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)));
     }
 
     private void RaisePointerUp()
     {
         if (PointerUp != null)
-            PointerUp(this, null);
+            PointerUp(this, new PointerEventArgs(Input.mousePosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)));
     }
+    #endregion
 
+    #region Global events
+    /// <summary>
+    /// Called when user presses mouse button anywhere
+    /// </summary>
+    public event PointerDownEventHandler GlobalPointerDown;
+    /// <summary>
+    /// Called when user raises mouse button anywhere
+    /// </summary>
+    public event PointerUpEventHandler GlobalPointerUp;
 
-    private void Awake()
+    private void RaiseGlobalPointerDown()
     {
-
+        if (GlobalPointerDown != null)
+            GlobalPointerDown(this, new PointerEventArgs(Input.mousePosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)));
     }
+
+    private void RaiseGlobalPointerUp()
+    {
+        if (GlobalPointerUp != null)
+            GlobalPointerUp(this, new PointerEventArgs(Input.mousePosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)));
+    }
+    #endregion
 
     private void OnMouseDown()
     {
@@ -35,12 +63,11 @@ public class EventManager : MonoBehaviour
         RaisePointerUp();
     }
 
-    void Update()
+    private void Update()
     {
-        /*if (Input.GetMouseButtonDown(0))
-            RaisePointerDown();
+        if (Input.GetMouseButtonDown(0))
+            RaiseGlobalPointerDown();
         if (Input.GetMouseButtonUp(0))
-            RaisePointerUp();*/
+            RaiseGlobalPointerUp();
     }
-
 }

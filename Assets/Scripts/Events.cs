@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// This file describes all types of events used in the game
+
+#region Trigger collider events
 public delegate void TriggerEnterEventHandler(object sender, TriggerEventArgs args);
 public delegate void TriggerExitEventHandler(object sender, TriggerEventArgs args);
 
@@ -14,7 +17,9 @@ public class TriggerEventArgs
         Collision = collision;
     }
 }
+#endregion
 
+#region Enemy events
 public delegate void EnemyFinishedEventHandler(object sender, EnemyFinishedEventArgs args);
 public class EnemyFinishedEventArgs
 {
@@ -45,11 +50,24 @@ public class EnemyHitEventArgs
         Health = health;
     }
 }
+#endregion
 
+#region Tower events 
+// TODO
+#endregion
+
+#region Global events
 public delegate void PointerDownEventHandler(object sender, PointerEventArgs args);
 public delegate void PointerUpEventHandler(object sender, PointerEventArgs args);
-
 public class PointerEventArgs
 {
+    public Vector3 mouseScreenPosition { get; }
+    public Vector3 mouseWolrdPosition {get ;}
 
+    public PointerEventArgs(Vector3 mouseScreenPosition, Vector3 mouseWolrdPosition)
+    {
+        this.mouseScreenPosition = mouseScreenPosition;
+        this.mouseWolrdPosition = mouseWolrdPosition;
+    }
 }
+#endregion

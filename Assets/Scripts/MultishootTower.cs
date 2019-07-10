@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Tower which shoots multiple projectiles at the same time to different directions
+/// </summary>
 public class MultishootTower : Tower
 {
-    public float fireForce = 0.05f;
-
+    // 8 directions of shooting
     private Vector2[] directions = new Vector2[] {
         new Vector2(1, 0),
         new Vector2(1, 1).normalized,

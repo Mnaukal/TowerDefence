@@ -3,24 +3,49 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+/// <summary>
+/// Base class for enemies
+/// </summary>
 public class Enemy : MonoBehaviour
 {
-    // Public
+    // Public parameters
     public float Speed = 1f;
     public int Health = 3;
+    /// <summary>
+    /// Money player gets when towers kill this enemy
+    /// </summary>
     public int Reward = 1;
-    public Healthbar Healthbar;
-    public Transform Sprite;
-    // Private
+    // Private links to other objects
+    [SerializeField]
+    private Healthbar Healthbar;
+    [SerializeField]
+    private Transform Sprite;
     private Path path;
-    private int pathNodeProgress = 0;
-    private float pathProgress = 0;
+    // Private variables
+    /// <summary>
+    /// At which segment of path the enemy currently is
+    /// </summary>
+    private int pathNodeIndex = 0;
+    /// <summary>
+    /// Progress along current segment (0 to 1)
+    /// </summary>
+    private float pathSegmentProgress = 0;
     private float segmentLength;
-    private bool waiting = false; // Wait after slower enemy before me
+    /// <summary>
+    /// Don't move because there is a slower enemy in front
+    /// </summary>
+    private bool waiting = false;
     private List<Enemy> waitingFor = new List<Enemy>();
 
     #region Events
+    /// <summary>
+    /// Called when enemy finishes the path
+    /// Player's HP should be decreased
+    /// </summary>
     public event EnemyFinishedEventHandler EnemyFinished;
+    /// <summary>
+    /// Called when enemy gets hit by a projectile from a tower
+    /// </summary>
     public event EnemyHitEventHandler EnemyHit;
 
     private void RaiseEnemyFinished()
@@ -36,6 +61,9 @@ public class Enemy : MonoBehaviour
     }
     #endregion
 
+    /// <summary>
+    /// Sets up enemy and starts it on first segment of path
+    /// </summary>
     public void SetupEnemy(float speed, int health, int reward)
     {
         Speed = speed;
@@ -58,15 +86,22 @@ public class Enemy : MonoBehaviour
             MoveEnemy();
     }
 
-    void MoveEnemy()
+    /// <summary>
+    /// Update enemy position along the path
+    /// </summary>
+    private void MoveEnemy()
     {
         float distDelta = Time.deltaTime * Speed;
-        pathProgress += distDelta / segmentLength;
-        if (pathProgress >= 1)
-            SetupSegment(pathNodeProgress + 1); // TODO event?
-        transform.position = Vector3.Lerp(path.Points[pathNodeProgress].position, path.Points[pathNodeProgress + 1].position, pathProgress);
+        pathSegmentProgress += distDelta / segmentLength;
+        if (pathSegmentProgress >= 1)
+            SetupSegment(pathNodeIndex + 1); // TODO event?
+        transform.position = Vector3.Lerp(path.Points[pathNodeIndex].position, path.Points[pathNodeIndex + 1].position, pathSegmentProgress);
     }
 
+    /// <summary>
+    /// Moves enemy to a new segment of path
+    /// </summary>
+    /// <param name="segmentIndex">index of path segment (from 0)</param>
     private void SetupSegment(int segmentIndex)
     {
         if (segmentIndex >= path.Points.Length - 1)
@@ -76,16 +111,20 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        pathNodeProgress = segmentIndex;
-        pathProgress = 0f;
-        segmentLength = Vector2.Distance(path.Points[pathNodeProgress].position, path.Points[pathNodeProgress + 1].position);
-        transform.position = path.Points[pathNodeProgress].position;
+        pathNodeIndex = segmentIndex;
+        pathSegmentProgress = 0f;
+        segmentLength = Vector2.Distance(path.Points[pathNodeIndex].position, path.Points[pathNodeIndex + 1].position);
+        transform.position = path.Points[pathNodeIndex].position;
         StartCoroutine(LookAtNextNode());
     }
 
+    /// <summary>
+    /// Over time rotates the enemy so it looks at next node in path
+    /// </summary>
+    /// <returns>Coroutine</returns>
     private IEnumerator LookAtNextNode()
     {
-        Vector2 newRight = path.Points[pathNodeProgress + 1].position - transform.position;
+        Vector2 newRight = path.Points[pathNodeIndex + 1].position - transform.position;
         Vector2 currentRight = Sprite.right;
 
         for (float i = 0; i <= 1; i += Time.deltaTime / 0.3f)
@@ -108,6 +147,9 @@ public class Enemy : MonoBehaviour
             CollisionEnterProjectile(p);
     }
 
+    /// <summary>
+    /// Got hit by projectile
+    /// </summary>
     private void CollisionEnterProjectile(Projectile p)
     {
         Hit(p.Damage);
@@ -124,10 +166,13 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Dying");
+        Debug.Log("Dying"); // TODO
         Destroy(this.gameObject);
     }
 
+    /// <summary>
+    /// Bumped into enemy in front 
+    /// </summary>
     private void CollisionEnterEnemy(Enemy e)
     {
         if (e.GetTotalProgress() > this.GetTotalProgress())
@@ -155,13 +200,15 @@ public class Enemy : MonoBehaviour
     /// Gets progress along the path.
     /// Value is 1 for every completed segment + progress on current segment (between 0 and 1). So the total range of this number is number of segments on the path.
     /// </summary>
-    /// <returns></returns>
     public float GetTotalProgress()
     {
-        return pathNodeProgress + pathProgress;
+        return pathNodeIndex + pathSegmentProgress;
     }
 }
 
+/// <summary>
+/// Compare enemy progress along path to know which one is in front
+/// </summary>
 class EnemyTotalProgressComparer : IComparer<Enemy>
 {
     Comparer<float> comparer;

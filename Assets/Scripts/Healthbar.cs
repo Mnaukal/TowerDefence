@@ -3,19 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// HealthBar of enemies
+/// </summary>
 public class Healthbar : MonoBehaviour
 {
-    public Image progress;
-    public Image background;
-    public Text text;
+    // links to GameObjects used to draw Healthbar
+    [SerializeField] 
+    private Image progress;
+    [SerializeField] 
+    private Image background;
+    [SerializeField]
+    private Text text;
 
     private int maxHealth = 1;
 
+    /// <summary>
+    /// Linked to EnemyHit event; updates healthbar
+    /// </summary>
     public void EnemyHit(object sender, EnemyHitEventArgs args)
     {
         UpdateHealth(args.Health);
     }
 
+    /// <summary>
+    /// Sets the maximum value of health to be shown on Healthbar
+    /// </summary>
+    /// <param name="max">new maximum value</param>
+    /// <param name="setHealthToMax">determines whether to set current drawn health to the new maximum</param>
     public void SetMax(int max, bool setHealthToMax = true)
     {
         maxHealth = max;
@@ -23,6 +38,9 @@ public class Healthbar : MonoBehaviour
             UpdateHealth(maxHealth);
     }
 
+    /// <summary>
+    /// Sets the new value of health to be drawn
+    /// </summary>
     public void UpdateHealth(int health)
     {
         if (health > maxHealth)

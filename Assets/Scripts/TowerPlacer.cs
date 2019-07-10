@@ -2,38 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Represents the preview of new tower being placed; controls where tower can be placed
+/// </summary>
 public class TowerPlacer : MonoBehaviour
 {
-    public Color EnabledColor;
-    public Color DisabledColor;
+    /// <summary>
+    /// Color of the preview when placing is possible
+    /// </summary>
+    [SerializeField]
+    private Color EnabledColor;
+    /// <summary>
+    /// Color of the preview when placing is not possible
+    /// </summary>
+    [SerializeField]
+    private Color DisabledColor;
+    /// <summary>
+    /// Tower object to be created when user clicks and posistion is valid
+    /// </summary>
     public GameObject Tower;
 
     private EventManager eventManager;
     private new SpriteRenderer renderer;
+    /// <summary>
+    /// number of other objects (other towers, path) blocking the placement
+    /// </summary>
     private int collisionCounter = 0;
 
     private void Awake()
     {
         eventManager = GameControllerS.I.EventManager;
-        //GameControllerS.I.Path.TriggerEnter += Path_TriggerEnter;
-        //GameControllerS.I.Path.TriggerExit += Path_TriggerExit;
         renderer = GetComponent<SpriteRenderer>();
     }
 
-    private void Path_TriggerExit(object sender, TriggerEventArgs args)
+    private void Update()
     {
-        if (args.Collision.gameObject == gameObject)
-            EnablePlacement();
-    }
-
-    private void Path_TriggerEnter(object sender, TriggerEventArgs args)
-    {
-        if(args.Collision.gameObject == gameObject)
-            DisablePlacement();
-    }
-
-    void Update()
-    {
+        // set the position to mouse position
         Vector3 newPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         newPos.z = 0;
         transform.position = newPos;
@@ -41,6 +45,8 @@ public class TowerPlacer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
+        // other towers block placement (can't be placed over each other)
+        // Note: path should also have "Tower" tag
         if (collider.gameObject.CompareTag("Tower"))
         {
             collisionCounter++;
@@ -58,13 +64,19 @@ public class TowerPlacer : MonoBehaviour
         }
     }
 
-    void EnablePlacement()
+    /// <summary>
+    /// Display that placement here is possible and register click event
+    /// </summary>
+    private void EnablePlacement()
     {
         eventManager.PointerDown += EventManager_PointerDown;
         renderer.color = EnabledColor;
     }
 
-    void DisablePlacement()
+    /// <summary>
+    /// Display that placement here is not possible
+    /// </summary>
+    private void DisablePlacement()
     {
         eventManager.PointerDown -= EventManager_PointerDown;
         renderer.color = DisabledColor;
@@ -75,17 +87,21 @@ public class TowerPlacer : MonoBehaviour
         PlaceTower();
     }
 
-    void PlaceTower()
+    /// <summary>
+    /// Places the tower on game plan
+    /// </summary>
+    private void PlaceTower()
     {
         UnregisterEvents();
         var t = Instantiate(Tower, transform.position, transform.rotation, GameControllerS.I.TowersParent.transform);
         Destroy(this.gameObject);
     }
 
-    void UnregisterEvents()
+    /// <summary>
+    /// Unsubscribe all events that this script can be subscribed to
+    /// </summary>
+    private void UnregisterEvents()
     {
         eventManager.PointerDown -= EventManager_PointerDown;
-        GameControllerS.I.Path.TriggerEnter -= Path_TriggerEnter;
-        GameControllerS.I.Path.TriggerExit -= Path_TriggerExit;
     }
 }
