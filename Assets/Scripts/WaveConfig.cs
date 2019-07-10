@@ -15,19 +15,19 @@ public partial class WaveController : MonoBehaviour
         waves = new Wave[]
         {
             new Wave(new WaveItem[] {
-                    new WaveItem(1f, 1f, enemyTypes[0], 5, 1, 1f, 3),
-                    new WaveItem(5f, 2f, enemyTypes[0], 10, 1, 1.4f, 3),
-                    new WaveItem(1f, 1f, enemyTypes[0], 5, 1, 1f, 3)
+                    new WaveItem(1f, 1f, enemyTypes[0], 5, 50, 1f, 3),
+                    new WaveItem(5f, 2f, enemyTypes[0], 10, 50, 1.4f, 3),
+                    new WaveItem(1f, 1f, enemyTypes[0], 5, 50, 1f, 3)
                 }),
             new Wave(new WaveItem[] {
-                    new WaveItem(1f, 1f, enemyTypes[0], 5, 1, 1f),
-                    new WaveItem(5f, 2f, enemyTypes[0], 10, 1, 1.4f),
-                    new WaveItem(1f, 1f, enemyTypes[0], 5, 1, 1f)
+                    new WaveItem(1f, 1f, enemyTypes[0], 5, 50, 1f),
+                    new WaveItem(5f, 2f, enemyTypes[0], 10, 50, 1.4f),
+                    new WaveItem(1f, 1f, enemyTypes[0], 5, 50, 1f)
                 }),
             new Wave(new WaveItem[] {
-                    new WaveItem(1f, 1f, enemyTypes[0], 5, 1, 1f, 3),
-                    new WaveItem(5f, 2f, enemyTypes[0], 10, 1, 1.4f, 3),
-                    new WaveItem(1f, 1f, enemyTypes[0], 5, 1, 1f, 3)
+                    new WaveItem(1f, 1f, enemyTypes[0], 5, 50, 1f, 3),
+                    new WaveItem(5f, 2f, enemyTypes[0], 10, 50, 1.4f, 3),
+                    new WaveItem(1f, 1f, enemyTypes[0], 5, 50, 1f, 3)
                 }),
         };
     }

@@ -69,6 +69,20 @@ public class MoneyBalanceUpdatedEventArgs
         OldBalance = oldBalance;
     }
 }
+
+public delegate void WaveStartedEvent(object sender, WaveEventArgs args);
+public delegate void WaveFinishedEvent(object sender, WaveEventArgs args);
+public class WaveEventArgs
+{
+    public int WaveNumber;
+    public int NumberOfEnemies;
+
+    public WaveEventArgs(int waveNumber, int numberOfEnemies)
+    {
+        WaveNumber = waveNumber;
+        NumberOfEnemies = numberOfEnemies;
+    }
+}
 #endregion
 
 #region Global events

@@ -100,10 +100,17 @@ public abstract class Tower : MonoBehaviour
     /// </summary>
     private void Select()
     {
+        DeselectAllTowers();
         selected = true;
         TowerRange.SetActive(true);
         // deselect when clicking elsewhere
         GameControllerS.I.EventManager.PointerDown += EventManager_PointerDown;
+    }
+
+    private void DeselectAllTowers()
+    {
+        foreach (Tower t in GameControllerS.I.TowersParent.GetComponentsInChildren<Tower>())
+            t.Deselect();
     }
 
     private void EventManager_PointerDown(object sender, PointerEventArgs args)
@@ -111,7 +118,7 @@ public abstract class Tower : MonoBehaviour
         Deselect();
     }
 
-    private void Deselect()
+    public void Deselect()
     {
         selected = false;
         TowerRange.SetActive(false);

@@ -174,12 +174,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a65230d9f78c61458f61c1462d5e2c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReloadTime: 1
-  Range: 3
+  ReloadTime: 3
+  Range: 1.5
+  Damage: 1
   Projectile: {fileID: 6850031420888224678, guid: b531bae9896868c4eac6a78d9e3c8c6c,
     type: 3}
-  TowerRange: {fileID: 7982590051139865515}
   fireForce: 0.05
+  TowerRange: {fileID: 7982590051139865515}
 --- !u!58 &7445006134134693470
 CircleCollider2D:
   m_ObjectHideFlags: 0

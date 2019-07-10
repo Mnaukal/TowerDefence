@@ -128,6 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Health: 3
+  Reward: 50
   Healthbar: {fileID: 5227099980910454313}
   Sprite: {fileID: 4700477893892411355}
 --- !u!50 &8265749858466251043
