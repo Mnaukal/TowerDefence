@@ -7,7 +7,6 @@ using UnityEngine;
 #region Trigger collider events
 public delegate void TriggerEnterEventHandler(object sender, TriggerEventArgs args);
 public delegate void TriggerExitEventHandler(object sender, TriggerEventArgs args);
-
 public class TriggerEventArgs
 {
     public Collider2D Collision { get; }
@@ -20,12 +19,13 @@ public class TriggerEventArgs
 #endregion
 
 #region Enemy events
-public delegate void EnemyFinishedEventHandler(object sender, EnemyFinishedEventArgs args);
-public class EnemyFinishedEventArgs
+public delegate void EnemyFinishedEventHandler(object sender, EnemyEventArgs args);
+public delegate void EnemyKilledEventHandler(object sender, EnemyEventArgs args);
+public class EnemyEventArgs
 {
     public Enemy enemy { get; }
 
-    public EnemyFinishedEventArgs(Enemy enemy)
+    public EnemyEventArgs(Enemy enemy)
     {
         this.enemy = enemy;
     }
@@ -54,6 +54,21 @@ public class EnemyHitEventArgs
 
 #region Tower events 
 // TODO
+#endregion
+
+#region Game events 
+public delegate void MoneyBalanceUpdatedHandler(object sender, MoneyBalanceUpdatedEventArgs args);
+public class MoneyBalanceUpdatedEventArgs
+{
+    public int NewBalance;
+    public int OldBalance;
+
+    public MoneyBalanceUpdatedEventArgs(int newBalance, int oldBalance)
+    {
+        NewBalance = newBalance;
+        OldBalance = oldBalance;
+    }
+}
 #endregion
 
 #region Global events

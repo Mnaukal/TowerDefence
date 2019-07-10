@@ -20,7 +20,7 @@ public class TowerPlacer : MonoBehaviour
     /// <summary>
     /// Tower object to be created when user clicks and posistion is valid
     /// </summary>
-    public GameObject Tower;
+    public Tower Tower;
 
     private EventManager eventManager;
     private new SpriteRenderer renderer;
@@ -29,10 +29,21 @@ public class TowerPlacer : MonoBehaviour
     /// </summary>
     private int collisionCounter = 0;
 
+    /// <summary>
+    /// GameObject to display the range of Tower to player
+    /// </summary>
+    [SerializeField]
+    private GameObject TowerRange;
+
     private void Awake()
     {
         eventManager = GameControllerS.I.EventManager;
         renderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void Start()
+    {
+        TowerRange.transform.localScale = new Vector3(2 * Tower.GetRange(), 2 * Tower.GetRange(), 1);
     }
 
     private void Update()

@@ -117,4 +117,8 @@ public abstract class Tower : MonoBehaviour
         TowerRange.SetActive(false);
         GameControllerS.I.EventManager.PointerDown -= EventManager_PointerDown;
     }
+
+    public float GetReloadTime() => ReloadTime;
+    public float GetRange() => Range;
+    public int GetDamage() => Damage;
 }

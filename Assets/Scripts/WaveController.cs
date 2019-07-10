@@ -48,5 +48,7 @@ public partial class WaveController : MonoBehaviour
     {
         Enemy e = Instantiate(enemyDescription.EnemyType, GameControllerS.I.EnemiesParent.transform);
         e.SetupEnemy(enemyDescription.Speed, enemyDescription.EnemyHealth, enemyDescription.Reward);
+        e.EnemyFinished += GameControllerS.I.EnemyFinished;
+        e.EnemyKilled += GameControllerS.I.EnemyKilledReward;
     }
 }

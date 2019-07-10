@@ -47,17 +47,24 @@ public class Enemy : MonoBehaviour
     /// Called when enemy gets hit by a projectile from a tower
     /// </summary>
     public event EnemyHitEventHandler EnemyHit;
+    public event EnemyKilledEventHandler EnemyKilled;
 
     private void RaiseEnemyFinished()
     {
         if (EnemyFinished != null)
-            EnemyFinished(this, new EnemyFinishedEventArgs(this));
+            EnemyFinished(this, new EnemyEventArgs(this));
     }
 
     private void RaiseEnemyHit(int damage)
     {
         if (EnemyHit != null)
             EnemyHit(this, new EnemyHitEventArgs(this, damage, Health));
+    }
+
+    private void RaiseEnemyKilled()
+    {
+        if (EnemyKilled != null)
+            EnemyKilled(this, new EnemyEventArgs(this));
     }
     #endregion
 
@@ -166,7 +173,7 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Dying"); // TODO
+        RaiseEnemyKilled();
         Destroy(this.gameObject);
     }
 
