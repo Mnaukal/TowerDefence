@@ -22,8 +22,12 @@ public class MultishootTower : Tower
         for (int i = 0; i < directions.Length; i++)
         {
             var projectile = Instantiate(Projectile, transform.position, Quaternion.identity, GameControllerS.I.ProjectileParent.transform);
+            // set direction and speed of projectile
             projectile.transform.up = directions[i];
             projectile.GetComponent<Rigidbody2D>().AddForce(directions[i] * fireForce);
+            // set parameters
+            projectile.SetMaxDistanceFromTower(transform.position, Range);
+            projectile.Damage = Damage;
         }
     }
 }

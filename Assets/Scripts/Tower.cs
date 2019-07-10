@@ -7,6 +7,7 @@ public abstract class Tower : MonoBehaviour
 {
     public float ReloadTime = 1f;
     public float Range = 3f;
+    public int Damage = 1;
     public Projectile Projectile;
     public GameObject TowerRange;
 
