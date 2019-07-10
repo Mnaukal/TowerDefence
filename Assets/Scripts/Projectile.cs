@@ -50,4 +50,23 @@ public class Projectile : MonoBehaviour
     {
         Destroy(this.gameObject);
     }
+
+    /// <summary>
+    /// This should be called by Enemy which is hit by this projectile
+    /// </summary>
+    /// <param name="enemyHit">the Enemy which got hit</param>
+    public virtual void ProjectileHit(Enemy enemyHit)
+    {
+        DestroyMe();
+    }
+
+    /// <summary>
+    /// Computes how much damage should enemy get from this projectile
+    /// </summary>
+    /// <param name="enemy">Enemy hit by projectile</param>
+    /// <returns>Damage given to enemy</returns>
+    public virtual int DamageEnemy(Enemy enemy)
+    {
+        return Damage;
+    }
 }

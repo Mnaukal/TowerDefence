@@ -30,6 +30,8 @@ public class MultishootTower : Tower
             // set parameters
             projectile.SetMaxDistanceFromTower(transform.position, Range);
             projectile.Damage = Damage;
+
+            RaiseTowerShot(projectile);
         }
     }
 }

@@ -2292,7 +2292,7 @@ MonoBehaviour:
   projectileParent: {fileID: 1453897182}
   waveController: {fileID: 1608638224}
   shop: {fileID: 748547877}
-  money: 210
+  money: 250
 --- !u!4 &1608638223
 Transform:
   m_ObjectHideFlags: 0

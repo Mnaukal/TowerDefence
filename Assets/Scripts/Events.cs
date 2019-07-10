@@ -43,25 +43,40 @@ public class EnemyHitEventArgs
     /// </summary>
     public int Health { get; }
 
-    public EnemyHitEventArgs(Enemy enemy, int damage, int health)
+    public Vector2 HitPosition { get; }
+
+    public EnemyHitEventArgs(Enemy enemy, int damage, int health, Vector2 hitPosition)
     {
         this.enemy = enemy;
         Damage = damage;
         Health = health;
+        HitPosition = hitPosition;
     }
 }
 #endregion
 
 #region Tower events 
-// TODO
+public delegate void TowerShotEventHandler(object sender, TowerShotEventArgs args);
+public class TowerShotEventArgs
+{
+    public Tower Tower { get; }
+    public Projectile Projectile { get; }
+
+    public TowerShotEventArgs(Tower tower, Projectile projectile)
+    {
+        Tower = tower;
+        Projectile = projectile;
+    }
+}
+
 #endregion
 
 #region Game events 
 public delegate void MoneyBalanceUpdatedHandler(object sender, MoneyBalanceUpdatedEventArgs args);
 public class MoneyBalanceUpdatedEventArgs
 {
-    public int NewBalance;
-    public int OldBalance;
+    public int NewBalance { get; }
+    public int OldBalance { get; }
 
     public MoneyBalanceUpdatedEventArgs(int newBalance, int oldBalance)
     {
@@ -74,8 +89,8 @@ public delegate void WaveStartedEvent(object sender, WaveEventArgs args);
 public delegate void WaveFinishedEvent(object sender, WaveEventArgs args);
 public class WaveEventArgs
 {
-    public int WaveNumber;
-    public int NumberOfEnemies;
+    public int WaveNumber { get; }
+    public int NumberOfEnemies { get; }
 
     public WaveEventArgs(int waveNumber, int numberOfEnemies)
     {
@@ -91,7 +106,7 @@ public delegate void PointerUpEventHandler(object sender, PointerEventArgs args)
 public class PointerEventArgs
 {
     public Vector3 mouseScreenPosition { get; }
-    public Vector3 mouseWolrdPosition {get ;}
+    public Vector3 mouseWolrdPosition {get; }
 
     public PointerEventArgs(Vector3 mouseScreenPosition, Vector3 mouseWolrdPosition)
     {

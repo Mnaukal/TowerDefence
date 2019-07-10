@@ -176,10 +176,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ReloadTime: 1
   Range: 3
-  Projectile: {fileID: 6850031420888224678, guid: f9ee6d71aeb3a324bac3c59821a9ecb3,
+  Damage: 1
+  Projectile: {fileID: 126194760542697598, guid: f9ee6d71aeb3a324bac3c59821a9ecb3,
     type: 3}
-  TowerRange: {fileID: 7982590051139865515}
   fireForce: 0.05
+  TowerRange: {fileID: 7982590051139865515}
 --- !u!58 &7445006134134693470
 CircleCollider2D:
   m_ObjectHideFlags: 0

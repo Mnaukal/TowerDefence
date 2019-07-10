@@ -55,10 +55,10 @@ public class Enemy : MonoBehaviour
             EnemyFinished(this, new EnemyEventArgs(this));
     }
 
-    private void RaiseEnemyHit(int damage)
+    private void RaiseEnemyHit(int damage, Vector2 hitPosition)
     {
         if (EnemyHit != null)
-            EnemyHit(this, new EnemyHitEventArgs(this, damage, Health));
+            EnemyHit(this, new EnemyHitEventArgs(this, damage, Health, hitPosition));
     }
 
     private void RaiseEnemyKilled()
@@ -159,16 +159,16 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void CollisionEnterProjectile(Projectile p)
     {
-        Hit(p.Damage);
-        p.DestroyMe();
+        Hit(p.DamageEnemy(this), p.transform.position);
+        p.ProjectileHit(this);
     }
 
-    private void Hit(int damage)
+    private void Hit(int damage, Vector2 hitPosition)
     {
         Health -= damage;
         if (Health <= 0)
             Die();
-        RaiseEnemyHit(damage);
+        RaiseEnemyHit(damage, hitPosition);
     }
 
     private void Die()

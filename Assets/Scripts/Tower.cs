@@ -42,6 +42,19 @@ public abstract class Tower : MonoBehaviour
     private bool selected = false;
     private float timer = 0f;
 
+    #region Events
+    /// <summary>
+    /// Called when tower shoots
+    /// </summary>
+    public event TowerShotEventHandler TowerShot;
+
+    protected void RaiseTowerShot(Projectile projectile)
+    {
+        if (TowerShot != null)
+            TowerShot(this, new TowerShotEventArgs(this, projectile));
+    }
+    #endregion
+
     private void Start()
     {
         TowerRange.transform.localScale = new Vector3(2 * Range, 2 * Range, 1);
