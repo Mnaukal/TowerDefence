@@ -26,4 +26,9 @@ public class WaveUI : MonoBehaviour
         Button_NextWave.interactable = false;
         Text_WaveNumber.text = "Wave: " + (args.WaveNumber + 1);
     }
+
+    public void EnableStartButton()
+    {
+        Button_NextWave.interactable = true;
+    }
 }

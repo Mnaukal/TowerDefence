@@ -43,7 +43,7 @@ public class TowerPlacer : MonoBehaviour
 
     private void Start()
     {
-        TowerRange.transform.localScale = new Vector3(2 * Tower.GetRange(), 2 * Tower.GetRange(), 1);
+        TowerRange.transform.localScale = new Vector3(2 * Tower.Range, 2 * Tower.Range, 1);
     }
 
     private void Update()

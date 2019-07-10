@@ -11,18 +11,15 @@ public abstract class Tower : MonoBehaviour
     /// <summary>
     /// Seconds between shots
     /// </summary>
-    [SerializeField] 
-    protected float ReloadTime = 1f;
+    public float ReloadTime = 1f;
     /// <summary>
     /// Maximum distance to aim for an enemy
     /// </summary>
-    [SerializeField] 
-    protected float Range = 3f;
+    public float Range = 3f;
     /// <summary>
     /// Damage given by each projectile
     /// </summary>
-    [SerializeField] 
-    protected int Damage = 1;
+    public int Damage = 1;
     /// <summary>
     /// Projectile Prefab to be shot
     /// </summary>
@@ -137,8 +134,4 @@ public abstract class Tower : MonoBehaviour
         TowerRange.SetActive(false);
         GameControllerS.I.EventManager.PointerDown -= EventManager_PointerDown;
     }
-
-    public float GetReloadTime() => ReloadTime;
-    public float GetRange() => Range;
-    public int GetDamage() => Damage;
 }

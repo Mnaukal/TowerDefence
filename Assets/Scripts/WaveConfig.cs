@@ -6,7 +6,7 @@ public partial class WaveController : MonoBehaviour
 {
     public Enemy[] enemyTypes;
 
-    private Wave[] waves;
+    public Wave[] waves;
 
     // WaveItem(timeDelay, timeBetween, enemyType, enemyHealth, reward, speed, [count])
 

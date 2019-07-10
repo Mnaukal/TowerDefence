@@ -6,12 +6,9 @@ using UnityEngine.UI;
 public class ShopItemTower : MonoBehaviour
 {
     [Header("Tower Parameters")]
-    [SerializeField]
-    private Tower Tower;
-    [SerializeField]
-    private int Cost;
-    [SerializeField]
-    private string TowerName;
+    public Tower Tower;
+    public int Cost;
+    public string TowerName;
     [Header("UI objects links")]
     [SerializeField]
     private Text Text_Name;
@@ -21,14 +18,19 @@ public class ShopItemTower : MonoBehaviour
     private void Start()
     {
         // Setup UI
-        Text_Name.text = TowerName;
-        Text_Cost.text = Cost.ToString();
-        Text_Damage.text = "Damage: " + Tower.GetDamage().ToString();
-        Text_Range.text = "Range: " + Tower.GetRange().ToString();
-        Text_FireRate.text = "Fire Rate: " + (1f / Tower.GetReloadTime()).ToString("0.##");
+        SetupShopUI();
 
         // Link event
         GameControllerS.I.MoneyBalanceUpdated += MoneyBalanceUpdated;
+    }
+
+    public void SetupShopUI()
+    {
+        Text_Name.text = TowerName;
+        Text_Cost.text = Cost.ToString();
+        Text_Damage.text = "Damage: " + Tower.Damage.ToString();
+        Text_Range.text = "Range: " + Tower.Range.ToString();
+        Text_FireRate.text = "Fire Rate: " + (1f / Tower.ReloadTime).ToString("0.##");
     }
 
     private void MoneyBalanceUpdated(object sender, MoneyBalanceUpdatedEventArgs args)
