@@ -40,14 +40,17 @@ public class Enemy : MonoBehaviour
     #region Events
     /// <summary>
     /// Called when enemy finishes the path
-    /// Player's HP should be decreased
+    /// Player's HP should be decreased //TODO
     /// </summary>
-    public event EnemyFinishedEventHandler EnemyFinished;
+    public event EnemyEventHandler EnemyFinished;
     /// <summary>
     /// Called when enemy gets hit by a projectile from a tower
     /// </summary>
     public event EnemyHitEventHandler EnemyHit;
-    public event EnemyKilledEventHandler EnemyKilled;
+    /// <summary>
+    /// Called when enemy gets killed
+    /// </summary>
+    public event EnemyEventHandler EnemyKilled;
 
     private void RaiseEnemyFinished()
     {

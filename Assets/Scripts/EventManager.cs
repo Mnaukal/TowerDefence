@@ -11,11 +11,11 @@ public class EventManager : MonoBehaviour
     /// <summary>
     /// Called when user presses mouse button with mouse on game area; event can be blocked by an element in front (collider)
     /// </summary>
-    public event PointerDownEventHandler PointerDown;
+    public event PointerEventHandler PointerDown;
     /// <summary>
     /// Called when user raises mouse button with mouse on game area; event can be blocked by an element in front (collider)
     /// </summary>
-    public event PointerUpEventHandler PointerUp;
+    public event PointerEventHandler PointerUp;
 
     private void RaisePointerDown()
     {
@@ -34,11 +34,11 @@ public class EventManager : MonoBehaviour
     /// <summary>
     /// Called when user presses mouse button anywhere
     /// </summary>
-    public event PointerDownEventHandler GlobalPointerDown;
+    public event PointerEventHandler GlobalPointerDown;
     /// <summary>
     /// Called when user raises mouse button anywhere
     /// </summary>
-    public event PointerUpEventHandler GlobalPointerUp;
+    public event PointerEventHandler GlobalPointerUp;
 
     private void RaiseGlobalPointerDown()
     {

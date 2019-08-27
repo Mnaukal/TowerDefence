@@ -44,6 +44,7 @@ public abstract class Tower : MonoBehaviour
     /// Called when tower shoots
     /// </summary>
     public event TowerShotEventHandler TowerShot;
+    public event TowerEventHandler TowerSelected, TowerDeselected;
 
     protected void RaiseTowerShot(Projectile projectile)
     {
@@ -115,6 +116,7 @@ public abstract class Tower : MonoBehaviour
         TowerRange.SetActive(true);
         // deselect when clicking elsewhere
         GameControllerS.I.EventManager.PointerDown += EventManager_PointerDown;
+        RaiseTowerSelected();
     }
 
     private void DeselectAllTowers()
@@ -133,5 +135,6 @@ public abstract class Tower : MonoBehaviour
         selected = false;
         TowerRange.SetActive(false);
         GameControllerS.I.EventManager.PointerDown -= EventManager_PointerDown;
+        RaiseTowerDeselected();
     }
 }

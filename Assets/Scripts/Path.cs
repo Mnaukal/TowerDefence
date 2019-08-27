@@ -21,11 +21,11 @@ public class Path : MonoBehaviour
     /// <summary>
     /// Called when a collider enters the path
     /// </summary>
-    public event TriggerEnterEventHandler TriggerEnter;
+    public event TriggerEventHandler TriggerEnter;
     /// <summary>
     /// Called when a collider exits the path
     /// </summary>
-    public event TriggerExitEventHandler TriggerExit;
+    public event TriggerEventHandler TriggerExit;
 
     private void RaiseTriggerEnter(Collider2D collision)
     {

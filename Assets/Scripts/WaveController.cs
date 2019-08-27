@@ -12,11 +12,11 @@ public partial class WaveController : MonoBehaviour
     /// <summary>
     /// Called when wave starts
     /// </summary>
-    public event WaveStartedEvent WaveStarted;
+    public event WaveEventHandler WaveStarted;
     /// <summary>
     /// Called when all enemies of wave are dead (either killed by player or reached the end of path)
     /// </summary>
-    public event WaveFinishedEvent WaveFinished;
+    public event WaveEventHandler WaveFinished;
 
     private void RaiseWaveStarted()
     {

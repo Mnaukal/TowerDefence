@@ -5,8 +5,7 @@ using UnityEngine;
 // This file describes all types of events used in the game
 
 #region Trigger collider events
-public delegate void TriggerEnterEventHandler(object sender, TriggerEventArgs args);
-public delegate void TriggerExitEventHandler(object sender, TriggerEventArgs args);
+public delegate void TriggerEventHandler(object sender, TriggerEventArgs args);
 public class TriggerEventArgs
 {
     public Collider2D Collision { get; }
@@ -19,8 +18,7 @@ public class TriggerEventArgs
 #endregion
 
 #region Enemy events
-public delegate void EnemyFinishedEventHandler(object sender, EnemyEventArgs args);
-public delegate void EnemyKilledEventHandler(object sender, EnemyEventArgs args);
+public delegate void EnemyEventHandler(object sender, EnemyEventArgs args);
 public class EnemyEventArgs
 {
     public Enemy enemy { get; }
@@ -56,6 +54,17 @@ public class EnemyHitEventArgs
 #endregion
 
 #region Tower events 
+public delegate void TowerEventHandler(object sender, TowerEventArgs args);
+public class TowerEventArgs
+{
+    public Tower tower { get; }
+
+    public TowerEventArgs(Tower tower)
+    {
+        this.tower = tower;
+    }
+}
+
 public delegate void TowerShotEventHandler(object sender, TowerShotEventArgs args);
 public class TowerShotEventArgs
 {
@@ -85,8 +94,7 @@ public class MoneyBalanceUpdatedEventArgs
     }
 }
 
-public delegate void WaveStartedEvent(object sender, WaveEventArgs args);
-public delegate void WaveFinishedEvent(object sender, WaveEventArgs args);
+public delegate void WaveEventHandler(object sender, WaveEventArgs args);
 public class WaveEventArgs
 {
     public int WaveNumber { get; }
@@ -101,8 +109,7 @@ public class WaveEventArgs
 #endregion
 
 #region Global events
-public delegate void PointerDownEventHandler(object sender, PointerEventArgs args);
-public delegate void PointerUpEventHandler(object sender, PointerEventArgs args);
+public delegate void PointerEventHandler(object sender, PointerEventArgs args);
 public class PointerEventArgs
 {
     public Vector3 mouseScreenPosition { get; }
