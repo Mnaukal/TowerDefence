@@ -9,6 +9,11 @@ using System.Linq;
 public abstract class Tower : MonoBehaviour
 {
     /// <summary>
+    /// Index of the Tower type
+    /// currently: 0 = simple, 1 = multi, 2 = sniper, 3 = freezing, 4 = bomb
+    /// </summary>
+    public int TowerTypeIndex;
+    /// <summary>
     /// Seconds between shots
     /// </summary>
     public float ReloadTime = 1f;
@@ -20,6 +25,10 @@ public abstract class Tower : MonoBehaviour
     /// Damage given by each projectile
     /// </summary>
     public int Damage = 1;
+    /// <summary>
+    /// Current levels of upgrades for this tower
+    /// </summary>
+    public int[] UpgradeLevels;
     /// <summary>
     /// Projectile Prefab to be shot
     /// </summary>
@@ -51,12 +60,25 @@ public abstract class Tower : MonoBehaviour
         if (TowerShot != null)
             TowerShot(this, new TowerShotEventArgs(this, projectile));
     }
+
+    protected void RaiseTowerSelected()
+    {
+        if (TowerSelected != null)
+            TowerSelected(this, new TowerEventArgs(this));
+    }
+
+    protected void RaiseTowerDeselected()
+    {
+        if (TowerDeselected != null)
+            TowerDeselected(this, new TowerEventArgs(this));
+    }
     #endregion
 
     private void Start()
     {
         TowerRange.transform.localScale = new Vector3(2 * Range, 2 * Range, 1);
         ResetTimer();
+        UpgradeLevels = new int[GameControllerS.I.UpgradeManager.GetUpgradeCountForTowerIndex(this.TowerTypeIndex)];
     }
 
     private void Update()
@@ -114,6 +136,7 @@ public abstract class Tower : MonoBehaviour
         DeselectAllTowers();
         selected = true;
         TowerRange.SetActive(true);
+        GameControllerS.I.Shop.LoadTowerInfo(this);
         // deselect when clicking elsewhere
         GameControllerS.I.EventManager.PointerDown += EventManager_PointerDown;
         RaiseTowerSelected();

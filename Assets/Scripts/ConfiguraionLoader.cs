@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using UnityEngine.Networking;
 
 /// <summary>
 /// Parse wave and tower configuration from text file
@@ -10,50 +11,77 @@ using System;
 public class ConfiguraionLoader : MonoBehaviour
 {
     [SerializeField]
-    private ShopItemTower[] shopItems;
-    [SerializeField]
     private WaveUI waveUI;
+    private ShopItemTower[] shopItems;
 
     void Start()
     {
-        string waveConfigFile = System.IO.Path.Combine(Application.streamingAssetsPath, "WaveConfiguration.txt");
-        string towerConfigFile = System.IO.Path.Combine(Application.streamingAssetsPath, "TowerConfiguration.txt");
-
+        shopItems = GameControllerS.I.Shop.towerButtons;
         try
         {
-            LoadTowerConfing(towerConfigFile);
-            LoadWaveConfing(waveConfigFile);
+            StartCoroutine(LoadStreamingAsset("TowerConfiguration.txt", LoadTowerConfing));
+            StartCoroutine(LoadStreamingAsset("WaveConfiguration.txt", LoadWaveConfing));
         }
         catch (ConfigFileException e)
         {
             Debug.LogError(e.Message);
+            waveUI.EnableStartButton();
         }
+    }
+
+    IEnumerator LoadStreamingAsset(string filename, System.Action<string> parser)
+    {
+        string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, filename);
+
+        string result = "";
+
+        if (filePath.Contains("://") || filePath.Contains(":///"))
+        {
+            UnityWebRequest www = UnityWebRequest.Get(filePath);
+            yield return www.SendWebRequest();
+
+            if (!www.isNetworkError && !www.isHttpError)
+            {
+                result = www.downloadHandler.text;
+            }
+        }
+        else
+            result = File.ReadAllText(filePath);
+
+        parser(result);
     }
 
     private void LoadTowerConfing(string towerConfigFile)
     {
-        int lineNumber = 0;
-        int towerIndex = 0;
-        using (StreamReader sr = new StreamReader(towerConfigFile))
+        string[] lines = towerConfigFile.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        Debug.Log("Loading Tower Configuration: " + lines.Length + " lines.");
+        int towerIndex = -1; // increased by 1 before adding first tower
+
+        for (int lineNumber = 0; lineNumber < lines.Length; lineNumber++)
         {
-            while (true)
+            string line = lines[lineNumber];
+            if (line == null)
+                break;
+
+            if (line.Length == 0 || line[0] == '#') // comment in file
+                continue;
+
+            string[] tokens = line.Split(',');
+            if(tokens.Length == 0)
+                throw new ConfigFileException("Invalid number of values on line " + (lineNumber + 1));
+
+            if (tokens[0] == "u") // upgrade
             {
-                lineNumber++;
-                string line = sr.ReadLine();
-                if (line == null)
-                    break;
-
-                if (line.Length == 0 || line[0] == '#') // comment in file
-                    continue;
-
-                string[] tokens = line.Split(',');
-
-                ParseTower(tokens, towerIndex, lineNumber);
-                shopItems[towerIndex].SetupShopUI();
+                ParseUpgrade(tokens, towerIndex, lineNumber + 1);
+            }
+            else
+            {
                 towerIndex++;
+                ParseTower(tokens, towerIndex, lineNumber + 1);
+                shopItems[towerIndex].SetupShopUI();
+                GameControllerS.I.UpgradeManager.AddTowerType();
             }
         }
-
     }
 
     private void ParseTower(string[] tokens, int towerIndex, int lineNumber)
@@ -62,6 +90,7 @@ public class ConfiguraionLoader : MonoBehaviour
             throw new ConfigFileException("Invalid number of values on line " + lineNumber);
 
         shopItems[towerIndex].TowerName = tokens[0];
+        shopItems[towerIndex].Tower.TowerTypeIndex = towerIndex;
 
         if (!int.TryParse(tokens[1], out int cost))
             throw new ConfigFileException("Invalid tower cost on line " + lineNumber);
@@ -80,45 +109,86 @@ public class ConfiguraionLoader : MonoBehaviour
         shopItems[towerIndex].Tower.ReloadTime = reload;
     }
 
+    private void ParseUpgrade(string[] tokens, int towerIndex, int lineNumber)
+    {
+        if (tokens.Length < 3)
+            throw new ConfigFileException("Invalid number of values on line " + lineNumber);
+
+        int upgradeIndex = GameControllerS.I.UpgradeManager.AddUpgrade(towerIndex);
+        for (int i = 2; i < tokens.Length; i++)
+        {
+            string[] tokensUpgrade = tokens[i].Split(':');
+            var up = ParseUpgradeLevel(tokensUpgrade, upgradeIndex, tokens[1], "Level " + (i - 1).ToString(), lineNumber);
+            GameControllerS.I.UpgradeManager.AddUpgradeLevel(towerIndex, upgradeIndex, up);
+        }
+    }
+
+    private TowerUpgrade ParseUpgradeLevel(string[] tokens, int upgradeIndex, string name, string level, int lineNumber)
+    {
+        if (tokens.Length != 3)
+            throw new ConfigFileException("Invalid number of values in upgrade level on line " + lineNumber);
+
+        if (!int.TryParse(tokens[0], out int cost))
+            throw new ConfigFileException("Invalid upgrade cost on line " + lineNumber);
+
+        switch (tokens[1])
+        {
+            case "d":
+                if (!int.TryParse(tokens[2], out int damage))
+                    throw new ConfigFileException("Invalid upgrade damage on line " + lineNumber);
+                return new TowerUpgrade(cost, BasicUpgrades.Damage(damage), name + " " + damage, level);
+
+            case "r":
+                if (!float.TryParse(tokens[2], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out float range))
+                    throw new ConfigFileException("Invalid tower range on line " + lineNumber);
+                return new TowerUpgrade(cost, BasicUpgrades.Range(range), name + " " + range, level);
+
+            case "t":
+                if (!float.TryParse(tokens[2], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out float time))
+                    throw new ConfigFileException("Invalid tower range on line " + lineNumber);
+                return new TowerUpgrade(cost, BasicUpgrades.ReloadTime(time), name + " " + time, level);
+
+            default:
+                throw new ConfigFileException("Invalid upgrade type on line " + lineNumber);
+        }
+    }
+
     private void LoadWaveConfing(string waveConfigFile)
     {
-        int lineNumber = 0;
+        string[] lines = waveConfigFile.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        Debug.Log("Loading Wave Configuration: " + lines.Length + " lines.");
+
         List<Wave> waves = new List<Wave>();
         List<WaveItem> items = new List<WaveItem>();
 
-        using (StreamReader sr = new StreamReader(waveConfigFile))
+        for (int lineNumber = 0; lineNumber < lines.Length; lineNumber++)
         {
-            while (true)
+            string line = lines[lineNumber];
+            if (line == null)
+                break;
+
+            if (line.Length == 0 || line[0] == '#') // comment in file
+                continue;
+
+            string[] tokens = line.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (tokens.Length > 0 && tokens[0] == "wave") // add current wave to wave list
             {
-                lineNumber++;
-                string line = sr.ReadLine();
-                if (line == null)
-                    break;
-
-                if (line.Length == 0 || line[0] == '#') // comment in file
-                    continue;
-
-                string[] tokens = line.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-                if(tokens.Length > 0 && tokens[0] == "wave") // add current wave to wave list
+                if (items.Count > 0)
                 {
-                    if (items.Count > 0)
-                    {
-                        waves.Add(new Wave(items.ToArray()));
-                    }
-                    items.Clear();
-                    continue;
+                    waves.Add(new Wave(items.ToArray()));
                 }
-
-                WaveItem item = ParseWaveItem(tokens, lineNumber);
-                items.Add(item);
+                items.Clear();
+                continue;
             }
 
-            // add last wave
-            if (items.Count > 0) 
-                waves.Add(new Wave(items.ToArray()));
-           
+            WaveItem item = ParseWaveItem(tokens, lineNumber + 1);
+            items.Add(item);
         }
+
+        // add last wave
+        if (items.Count > 0)
+            waves.Add(new Wave(items.ToArray()));
 
         GameControllerS.I.WaveController.waves = waves.ToArray();
         waveUI.EnableStartButton();

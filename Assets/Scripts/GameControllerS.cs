@@ -79,6 +79,13 @@ public class GameControllerS : MonoBehaviour
     /// Buying towers and upgrades
     /// </summary>
     public Shop Shop => shop;
+
+    [SerializeField]
+    private UpgradeManager upgradeManager;
+    /// <summary>
+    /// List of possible upgrades for all towers
+    /// </summary>
+    public UpgradeManager UpgradeManager => upgradeManager;
     #endregion
 
     #region Money

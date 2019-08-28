@@ -105,6 +105,7 @@ public class TowerPlacer : MonoBehaviour
     {
         UnregisterEvents();
         var t = Instantiate(Tower, transform.position, transform.rotation, GameControllerS.I.TowersParent.transform);
+        t.name = Tower.gameObject.name;
         Destroy(this.gameObject);
     }
 

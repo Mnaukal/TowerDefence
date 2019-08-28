@@ -53,6 +53,9 @@ public class ShopItemTower : MonoBehaviour
 
     public void BuyTower()
     {
+        if (GameControllerS.I.Money < Cost)
+            throw new System.InvalidOperationException("This method should only be called when clicking the button in shop (which should be only enabled if user has enough money).");
+
         GameControllerS.I.SubtractMoney(Cost);
         TowerPlacer tp = Instantiate(GameControllerS.I.Shop.TowerPlacer);
         tp.Tower = Tower;
