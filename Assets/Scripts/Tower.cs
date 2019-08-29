@@ -76,12 +76,17 @@ public abstract class Tower : MonoBehaviour
 
     private void Start()
     {
-        TowerRange.transform.localScale = new Vector3(2 * Range, 2 * Range, 1);
+        SetRangeUI();
         ResetTimer();
         UpgradeLevels = new int[GameControllerS.I.UpgradeManager.GetUpgradeCountForTowerIndex(this.TowerTypeIndex)];
     }
 
-    private void Update()
+    public void SetRangeUI()
+    {
+        TowerRange.transform.localScale = new Vector3(2 * Range, 2 * Range, 1);
+    }
+
+private void Update()
     {
         timer -= Time.deltaTime;
         if(timer <= 0 && EnemyInRange())

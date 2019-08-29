@@ -21,6 +21,10 @@ public class TowerPlacer : MonoBehaviour
     /// Tower object to be created when user clicks and posistion is valid
     /// </summary>
     public Tower Tower;
+    /// <summary>
+    /// Cost of the Tower which is being placed
+    /// </summary>
+    public int Cost;
 
     private EventManager eventManager;
     private new SpriteRenderer renderer;
@@ -44,6 +48,13 @@ public class TowerPlacer : MonoBehaviour
     private void Start()
     {
         TowerRange.transform.localScale = new Vector3(2 * Tower.Range, 2 * Tower.Range, 1);
+        GameControllerS.I.Shop.DisableRightPanel();
+        GameControllerS.I.EventManager.RightPanelPointerDown += EventManager_RightPanelPointerDown;
+    }
+
+    private void EventManager_RightPanelPointerDown(object sender, PointerEventArgs args)
+    {
+        CancelPlacement();
     }
 
     private void Update()
@@ -52,6 +63,9 @@ public class TowerPlacer : MonoBehaviour
         Vector3 newPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         newPos.z = 0;
         transform.position = newPos;
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+            CancelPlacement();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -106,6 +120,7 @@ public class TowerPlacer : MonoBehaviour
         UnregisterEvents();
         var t = Instantiate(Tower, transform.position, transform.rotation, GameControllerS.I.TowersParent.transform);
         t.name = Tower.gameObject.name;
+        GameControllerS.I.Shop.EnableRightPanel();
         Destroy(this.gameObject);
     }
 
@@ -115,5 +130,14 @@ public class TowerPlacer : MonoBehaviour
     private void UnregisterEvents()
     {
         eventManager.PointerDown -= EventManager_PointerDown;
+        eventManager.RightPanelPointerDown -= EventManager_RightPanelPointerDown;
+    }
+
+    public void CancelPlacement()
+    {
+        UnregisterEvents();
+        GameControllerS.I.Shop.EnableRightPanel();
+        GameControllerS.I.AddMoney(Cost);
+        Destroy(this.gameObject);
     }
 }

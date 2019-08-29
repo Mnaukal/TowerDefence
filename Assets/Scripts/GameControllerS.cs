@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// main GameController script, Singleton
@@ -86,6 +87,13 @@ public class GameControllerS : MonoBehaviour
     /// List of possible upgrades for all towers
     /// </summary>
     public UpgradeManager UpgradeManager => upgradeManager;
+
+    [SerializeField]
+    private GameObject gameOverScreen;
+    /// <summary>
+    /// Path along which the enemies walk
+    /// </summary>
+    public GameObject GameOverScreen => gameOverScreen;
     #endregion
 
     #region Money
@@ -134,9 +142,44 @@ public class GameControllerS : MonoBehaviour
         Money -= amount;
     }
 
+    #endregion
+    #region Lives
+    #region events
+    /// <summary>
+    /// Raised when money is added or subtracted
+    /// </summary>
+    public event LivesUpdatedHandler LivesUpdated;
+
+    private void RaiseLivesUpdated(int newLives, int oldLives)
+    {
+        if (LivesUpdated != null)
+            LivesUpdated(this, new LivesUpdatedEventArgs(newLives, oldLives));
+    }
+    #endregion
+
+    [SerializeField]
+    private int lives = 0;
+    public int Lives
+    {
+        get
+        {
+            return lives;
+        }
+        private set
+        {
+            int oldValue = lives;
+            lives = value;
+            RaiseLivesUpdated(lives, oldValue);
+        }
+    }
+
     public void EnemyFinished(object sender, EnemyEventArgs args)
     {
         Debug.Log("Enemy finished: " + args.enemy);
+
+        Lives--;
+        if (Lives <= 0)
+            GameOver();
     }
 
     public void EnemyKilledReward(object sender, EnemyEventArgs args)
@@ -145,6 +188,17 @@ public class GameControllerS : MonoBehaviour
         AddMoney(args.enemy.Reward);
     }
 
+    private void GameOver()
+    {
+        Debug.Log("Game Over");
+        Time.timeScale = 0;
+        GameOverScreen.SetActive(true);
+    }
 
+    public void RestartGame()
+    {
+        // reload the game scene
+        SceneManager.LoadScene("game");
+    }
     #endregion
 }

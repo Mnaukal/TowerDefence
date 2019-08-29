@@ -94,6 +94,19 @@ public class MoneyBalanceUpdatedEventArgs
     }
 }
 
+public delegate void LivesUpdatedHandler(object sender, LivesUpdatedEventArgs args);
+public class LivesUpdatedEventArgs
+{
+    public int NewLives { get; }
+    public int OldLives { get; }
+
+    public LivesUpdatedEventArgs(int newLives, int oldLives)
+    {
+        NewLives = newLives;
+        OldLives = oldLives;
+    }
+}
+
 public delegate void WaveEventHandler(object sender, WaveEventArgs args);
 public class WaveEventArgs
 {

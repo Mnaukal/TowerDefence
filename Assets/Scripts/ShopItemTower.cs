@@ -31,6 +31,7 @@ public class ShopItemTower : MonoBehaviour
         Text_Damage.text = "Damage: " + Tower.Damage.ToString();
         Text_Range.text = "Range: " + Tower.Range.ToString();
         Text_FireRate.text = "Fire Rate: " + (1f / Tower.ReloadTime).ToString("0.##");
+        Tower.name = TowerName;
     }
 
     private void MoneyBalanceUpdated(object sender, MoneyBalanceUpdatedEventArgs args)
@@ -59,5 +60,6 @@ public class ShopItemTower : MonoBehaviour
         GameControllerS.I.SubtractMoney(Cost);
         TowerPlacer tp = Instantiate(GameControllerS.I.Shop.TowerPlacer);
         tp.Tower = Tower;
+        tp.Cost = Cost;
     }
 }

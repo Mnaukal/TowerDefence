@@ -53,6 +53,19 @@ public class EventManager : MonoBehaviour
     }
     #endregion
 
+    #region RightPanel events
+    /// <summary>
+    /// Called when user presses mouse button over the right panel (shop)
+    /// </summary>
+    public event PointerEventHandler RightPanelPointerDown;
+
+    public void RaiseRightPanelPointerDown()
+    {
+        if (RightPanelPointerDown != null)
+            RightPanelPointerDown(this, new PointerEventArgs(Input.mousePosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)));
+    }
+    #endregion
+
     private void OnMouseDown()
     {
         RaisePointerDown();

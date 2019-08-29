@@ -124,7 +124,10 @@ public class BasicUpgrades
 
     public static UpgradeFunction Range(float newValue)
     {
-        return t => { t.Range = newValue; };
+        return t => {
+            t.Range = newValue;
+            t.SetRangeUI();
+        };
     }
 
     public static UpgradeFunction ReloadTime(float newValue)

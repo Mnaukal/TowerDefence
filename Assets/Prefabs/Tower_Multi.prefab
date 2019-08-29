@@ -56,6 +56,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -139,6 +140,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -174,12 +176,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 971ba56c762f3354e817a9cc95be02b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TowerTypeIndex: 1
   ReloadTime: 1
   Range: 2
   Damage: 1
+  UpgradeLevels: 
   Projectile: {fileID: 6850031420888224678, guid: 44bd0ec4ced0efb44ac85e262c795276,
     type: 3}
-  fireForce: 0.05
+  fireForce: 0.1
   TowerRange: {fileID: 7982590051139865515}
 --- !u!58 &7445006134134693470
 CircleCollider2D:

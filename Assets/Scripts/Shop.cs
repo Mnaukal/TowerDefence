@@ -13,10 +13,11 @@ public class Shop : MonoBehaviour
     [SerializeField]
     private TowerPlacer towerPlacer;
     public TowerPlacer TowerPlacer => towerPlacer;
-
+    /// <summary>
+    /// Used to disable right panel buttons when placing Tower
+    /// </summary>
     [SerializeField]
-    private Text moneyText;
-
+    private GameObject rightPanelOverlay;
     
     [Header("TowerInfo")]
     [SerializeField]
@@ -26,14 +27,7 @@ public class Shop : MonoBehaviour
 
     private void Start()
     {
-        GameControllerS.I.MoneyBalanceUpdated += MoneyBalanceUpdated;
-        MoneyBalanceUpdated(this, new MoneyBalanceUpdatedEventArgs(GameControllerS.I.Money, 0));
         HideTowerInfoWhenTowerDeselected(this, null);
-    }
-
-    private void MoneyBalanceUpdated(object sender, MoneyBalanceUpdatedEventArgs args)
-    {
-        moneyText.text = "Money: " + args.NewBalance;
     }
 
     /// <summary>
@@ -75,5 +69,21 @@ public class Shop : MonoBehaviour
             upgradeButtons[i].ShowButton(upgrades[i], tower, i);
             tower.TowerDeselected += upgradeButtons[i].HideWhenTowerDeselected;
         }
+    }
+
+    /// <summary>
+    /// Shows the overlay over the right panel, so it isn't clickable
+    /// </summary>
+    public void DisableRightPanel()
+    {
+        rightPanelOverlay.SetActive(true);
+    }
+
+    /// <summary>
+    /// Disables the overlay
+    /// </summary>
+    public void EnableRightPanel()
+    {
+        rightPanelOverlay.SetActive(false);
     }
 }
