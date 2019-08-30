@@ -160,7 +160,7 @@ public class Enemy : MonoBehaviour
     /// <summary>
     /// Got hit by projectile
     /// </summary>
-    private void CollisionEnterProjectile(Projectile p)
+    public void CollisionEnterProjectile(Projectile p)
     {
         Hit(p.DamageEnemy(this), p.transform.position);
         p.ProjectileHit(this);

@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 1
+  DistanceEpsilon: 0.3
   Explosion: {fileID: 7605997901551609058}
   explosionSize: 2
 --- !u!61 &6325115199245507769
@@ -241,6 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 1
+  DistanceEpsilon: 0.3
   DontDamage: {fileID: 0}
 --- !u!58 &4866693364709375164
 CircleCollider2D:
@@ -252,7 +254,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

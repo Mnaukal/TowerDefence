@@ -19,6 +19,7 @@ public class WaveUI : MonoBehaviour
     private void WaveController_WaveFinished(object sender, WaveEventArgs args)
     {
         Button_NextWave.interactable = true;
+        Text_WaveNumber.text = "";
     }
 
     private void WaveController_WaveStarted(object sender, WaveEventArgs args)

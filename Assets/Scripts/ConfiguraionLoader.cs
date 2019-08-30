@@ -36,11 +36,6 @@ public class ConfiguraionLoader : MonoBehaviour
         {
             Debug.LogError(e.Message);
         }
-        finally
-        {
-            GameControllerS.I.RestartGame();
-            waveUI.EnableStartButton();
-        }
     }
 
     IEnumerator LoadStreamingAsset(string filename, System.Action<string> parser)
@@ -100,6 +95,8 @@ public class ConfiguraionLoader : MonoBehaviour
                 GameControllerS.I.UpgradeManager.AddTowerType();
             }
         }
+
+        GameControllerS.I.RestartGame();
     }
 
     private void ParseTower(string[] tokens, int towerIndex, int lineNumber)
@@ -238,6 +235,7 @@ public class ConfiguraionLoader : MonoBehaviour
             waves.Add(new Wave(items.ToArray()));
 
         GameControllerS.I.WaveController.waves = waves.ToArray();
+        waveUI.EnableStartButton();
     }
 
     private WaveItem ParseWaveItem(string[] tokens, int lineNumber)

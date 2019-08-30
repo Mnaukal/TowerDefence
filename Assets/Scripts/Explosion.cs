@@ -40,4 +40,13 @@ public class Explosion : Projectile
 
         return base.DamageEnemy(enemy);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Enemy e = collision.gameObject.GetComponent<Enemy>();
+        if (e == null)
+            return;
+
+        e.CollisionEnterProjectile(this);
+    }
 }
