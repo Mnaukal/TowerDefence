@@ -40,7 +40,7 @@ public class Enemy : MonoBehaviour
     #region Events
     /// <summary>
     /// Called when enemy finishes the path
-    /// Player's HP should be decreased //TODO
+    /// Player's HP should be decreased 
     /// </summary>
     public event EnemyEventHandler EnemyFinished;
     /// <summary>
@@ -104,7 +104,7 @@ public class Enemy : MonoBehaviour
         float distDelta = Time.deltaTime * Speed;
         pathSegmentProgress += distDelta / segmentLength;
         if (pathSegmentProgress >= 1)
-            SetupSegment(pathNodeIndex + 1); // TODO event?
+            SetupSegment(pathNodeIndex + 1); 
         transform.position = Vector3.Lerp(path.Points[pathNodeIndex].position, path.Points[pathNodeIndex + 1].position, pathSegmentProgress);
     }
 

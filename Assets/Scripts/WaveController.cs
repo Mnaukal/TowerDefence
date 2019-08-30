@@ -43,7 +43,10 @@ public partial class WaveController : MonoBehaviour
     {
         waveIndex++;
         if (waveIndex >= waves.Length)
-            return; // TODO win
+        {
+            GameControllerS.I.Victory();
+            return;
+        }
 
         enemiesInWave = waves[waveIndex].WaveItems.Sum(w => w.Count);
         enemiesRemaining = enemiesInWave;
@@ -95,5 +98,11 @@ public partial class WaveController : MonoBehaviour
     private void EndOfWave()
     {
         RaiseWaveFinished();
+    }
+
+    public void ResetGame()
+    {
+        waveIndex = -1;
+        EndOfWave();
     }
 }

@@ -13,6 +13,16 @@ public class ConfiguraionLoader : MonoBehaviour
     [SerializeField]
     private WaveUI waveUI;
     private ShopItemTower[] shopItems;
+    public int DefaultMoney
+    {
+        get;
+        private set;
+    }
+    public int DefaultLives
+    {
+        get;
+        private set;
+    }
 
     void Start()
     {
@@ -25,6 +35,10 @@ public class ConfiguraionLoader : MonoBehaviour
         catch (ConfigFileException e)
         {
             Debug.LogError(e.Message);
+        }
+        finally
+        {
+            GameControllerS.I.RestartGame();
             waveUI.EnableStartButton();
         }
     }
@@ -70,7 +84,11 @@ public class ConfiguraionLoader : MonoBehaviour
             if(tokens.Length == 0)
                 throw new ConfigFileException("Invalid number of values on line " + (lineNumber + 1));
 
-            if (tokens[0] == "u") // upgrade
+            if(tokens[0] == "d") // defaults
+            {
+                ParseDefaults(tokens, lineNumber + 1);
+            }
+            else if (tokens[0] == "u") // upgrade
             {
                 ParseUpgrade(tokens, towerIndex, lineNumber + 1);
             }
@@ -148,9 +166,38 @@ public class ConfiguraionLoader : MonoBehaviour
                     throw new ConfigFileException("Invalid tower range on line " + lineNumber);
                 return new TowerUpgrade(cost, BasicUpgrades.ReloadTime(time), name + " " + time, level);
 
+            case "e":
+                if (!float.TryParse(tokens[2], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out float explosionSize))
+                    throw new ConfigFileException("Invalid explosion size on line " + lineNumber);
+                return new TowerUpgrade(cost, BasicUpgrades.ExplosionSize(explosionSize), name + " " + explosionSize, level);
+
+            case "sa":
+                if (!float.TryParse(tokens[2], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out float slowAmount))
+                    throw new ConfigFileException("Invalid slow amount on line " + lineNumber);
+                return new TowerUpgrade(cost, BasicUpgrades.SlowAmount(slowAmount), name + " " + slowAmount, level);
+
+            case "sd":
+                if (!float.TryParse(tokens[2], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out float slowDuration))
+                    throw new ConfigFileException("Invalid slow duration on line " + lineNumber);
+                return new TowerUpgrade(cost, BasicUpgrades.SlowDuration(slowDuration), name + " " + slowDuration, level);
+
             default:
                 throw new ConfigFileException("Invalid upgrade type on line " + lineNumber);
         }
+    }
+
+    private void ParseDefaults(string[] tokens, int lineNumber)
+    {
+        if (tokens.Length != 3)
+            throw new ConfigFileException("Invalid number of values on line " + lineNumber);
+
+        if (!int.TryParse(tokens[1], out int money))
+            throw new ConfigFileException("Invalid default money on line " + lineNumber);
+        if (!int.TryParse(tokens[2], out int lives))
+            throw new ConfigFileException("Invalid default lives on line " + lineNumber);
+
+        DefaultMoney = money;
+        DefaultLives = lives;
     }
 
     private void LoadWaveConfing(string waveConfigFile)
@@ -191,7 +238,6 @@ public class ConfiguraionLoader : MonoBehaviour
             waves.Add(new Wave(items.ToArray()));
 
         GameControllerS.I.WaveController.waves = waves.ToArray();
-        waveUI.EnableStartButton();
     }
 
     private WaveItem ParseWaveItem(string[] tokens, int lineNumber)

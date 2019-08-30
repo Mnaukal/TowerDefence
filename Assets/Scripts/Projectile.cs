@@ -22,8 +22,12 @@ public class Projectile : MonoBehaviour
     /// Position of tower to compute distance from
     /// </summary>
     private Vector3 towerPosition;
+    /// <summary>
+    /// Offset allowed over the maxDistanceSqr before destroying projectile
+    /// </summary>
+    public float DistanceEpsilon = 0.3f;
 
-    private void Update()
+    private void LateUpdate()
     {
         if (maxDistanceSqr == 0)
             return;
@@ -39,6 +43,7 @@ public class Projectile : MonoBehaviour
     /// </summary>
     public void SetMaxDistanceFromTower(Vector3 towerPosition, float distance)
     {
+        distance += DistanceEpsilon;
         maxDistanceSqr = distance * distance;
         this.towerPosition = towerPosition;
     }

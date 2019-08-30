@@ -26,7 +26,7 @@ public class GameControllerS : MonoBehaviour
         {
             instance = this;
         }
-    }
+    }   
 
     #region Links to GameObjects
 
@@ -94,6 +94,13 @@ public class GameControllerS : MonoBehaviour
     /// Path along which the enemies walk
     /// </summary>
     public GameObject GameOverScreen => gameOverScreen;
+
+    [SerializeField]
+    private GameObject victoryScreen;
+    /// <summary>
+    /// Path along which the enemies walk
+    /// </summary>
+    public GameObject VictoryScreen => victoryScreen;
     #endregion
 
     #region Money
@@ -110,7 +117,6 @@ public class GameControllerS : MonoBehaviour
     }
     #endregion
 
-    [SerializeField]
     private int money = 0;
     public int Money
     {
@@ -157,7 +163,6 @@ public class GameControllerS : MonoBehaviour
     }
     #endregion
 
-    [SerializeField]
     private int lives = 0;
     public int Lives
     {
@@ -197,8 +202,29 @@ public class GameControllerS : MonoBehaviour
 
     public void RestartGame()
     {
-        // reload the game scene
-        SceneManager.LoadScene("game");
+        Debug.Log("Starting game...");
+        Time.timeScale = 1;
+        VictoryScreen.SetActive(false);
+        GameOverScreen.SetActive(false);
+
+        Money = GetComponent<ConfiguraionLoader>().DefaultMoney;
+        Lives = GetComponent<ConfiguraionLoader>().DefaultLives;
+
+        foreach (Transform child in EnemiesParent.transform)
+            GameObject.Destroy(child.gameObject);
+        foreach (Transform child in ProjectileParent.transform)
+            GameObject.Destroy(child.gameObject);
+        foreach (Transform child in TowersParent.transform)
+            GameObject.Destroy(child.gameObject);
+
+        GetComponent<WaveController>().ResetGame();
+    }
+
+    public void Victory()
+    {
+        Debug.Log("Victory!");
+        Time.timeScale = 0;
+        VictoryScreen.SetActive(true);
     }
     #endregion
 }

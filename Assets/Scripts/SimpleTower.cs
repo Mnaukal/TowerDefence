@@ -17,6 +17,7 @@ public class SimpleTower : Tower
             return;
         // create projectile
         var projectile = Instantiate(Projectile, transform.position, Quaternion.identity, GameControllerS.I.ProjectileParent.transform);
+        projectile.gameObject.SetActive(true);
         // set direction and speed of projectile
         Vector2 targetDirection = (targetEnemy.transform.position - transform.position).normalized;
         projectile.transform.up = targetDirection;

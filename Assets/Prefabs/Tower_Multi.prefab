@@ -70,7 +70,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 3776744db007d0f43803b25e44133825, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.11764706}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.1764706}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -183,7 +183,7 @@ MonoBehaviour:
   UpgradeLevels: 
   Projectile: {fileID: 6850031420888224678, guid: 44bd0ec4ced0efb44ac85e262c795276,
     type: 3}
-  fireForce: 0.1
+  fireForce: 0.05
   TowerRange: {fileID: 7982590051139865515}
 --- !u!58 &7445006134134693470
 CircleCollider2D:

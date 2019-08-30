@@ -10,7 +10,7 @@ public class ProjectileExploding : Projectile
     [SerializeField]
     private Explosion Explosion;
     [SerializeField]
-    private float explosionSize = 2f;
+    public float explosionSize = 2f;
 
     public override void ProjectileHit(Enemy enemyHit)
     {

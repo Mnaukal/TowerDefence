@@ -46,6 +46,8 @@ public class ShopItemUpgrade : MonoBehaviour
             Text_Cost.text = upgrade.Cost.ToString();
 
         Cost = upgrade.Cost;
+        OnEnable();
+
         gameObject.SetActive(true);
     }
 

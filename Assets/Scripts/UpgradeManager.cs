@@ -88,6 +88,7 @@ public class UpgradeManager : MonoBehaviour
 }
 
 public delegate void UpgradeFunction(Tower t);
+public delegate void UpgradeFunctionProjectile(Projectile p);
 
 public class TowerUpgrade
 {
@@ -133,5 +134,38 @@ public class BasicUpgrades
     public static UpgradeFunction ReloadTime(float newValue)
     {
         return t => { t.ReloadTime = newValue; };
+    }
+
+    public static UpgradeFunction SlowDuration(float newValue)
+    {
+        return t =>
+        {
+            t.ModifyProjectile(p =>
+            {
+                (p as ProjectileSlowing).slowTime = newValue;
+            });
+        };
+    }
+
+    public static UpgradeFunction SlowAmount(float newValue)
+    {
+        return t => 
+        {
+            t.ModifyProjectile(p =>
+            {
+                (p as ProjectileSlowing).slowAmount = newValue;
+            });
+        };
+    }
+
+    public static UpgradeFunction ExplosionSize(float newValue)
+    {
+        return t =>
+        {
+            t.ModifyProjectile(p =>
+            {
+                (p as ProjectileExploding).explosionSize = newValue;
+            });
+        };
     }
 }

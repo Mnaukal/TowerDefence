@@ -86,7 +86,7 @@ public abstract class Tower : MonoBehaviour
         TowerRange.transform.localScale = new Vector3(2 * Range, 2 * Range, 1);
     }
 
-private void Update()
+    private void Update()
     {
         timer -= Time.deltaTime;
         if(timer <= 0 && EnemyInRange())
@@ -134,7 +134,7 @@ private void Update()
     }
 
     /// <summary>
-    /// Display the range in game and TODO open menu for upgrades of this enemy
+    /// Display the range in game and open menu for upgrades of this enemy
     /// </summary>
     private void Select()
     {
@@ -164,5 +164,13 @@ private void Update()
         TowerRange.SetActive(false);
         GameControllerS.I.EventManager.PointerDown -= EventManager_PointerDown;
         RaiseTowerDeselected();
+    }
+
+    public void ModifyProjectile(UpgradeFunctionProjectile upgradeFunction)
+    {
+        Projectile p = (Projectile)Instantiate(Projectile);
+        upgradeFunction(p);
+        p.gameObject.SetActive(false);
+        Projectile = p;
     }
 }
