@@ -13,3 +13,7 @@ wave 4
 8, 1, 0, 10, 50, 1.4, 7
 wave 5
 0, 1, 0, 50, 150, 1
+wave 6
+0, 1, 0, 10, 50, 1, 10
+#repeat, enemy HP mult, enemy HP add, enemy count mult, enemy count add
+repeat,1.1,0,1,5 

@@ -229,6 +229,33 @@ public class ConfiguraionLoader : MonoBehaviour
                 items.Clear();
                 continue;
             }
+            if (tokens.Length > 0 && tokens[0] == "repeat") // add last wave as repeat wave
+            {
+                if (items.Count > 0)
+                    waves.Add(new Wave(items.ToArray()));
+
+                if (tokens.Length != 5)
+                    throw new ConfigFileException("Invalid number of values in Repeat on line " + lineNumber);
+
+                if (!float.TryParse(tokens[1], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out float enemyHPmult))
+                    throw new ConfigFileException("Invalid enemy HP multiplier in repeat on line " + lineNumber);
+
+                if (!int.TryParse(tokens[2], out int enemyHPadd))
+                    throw new ConfigFileException("Invalid enemy HP addition in repeat on line " + lineNumber);
+
+                if (!float.TryParse(tokens[3], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out float enemyCountMult))
+                    throw new ConfigFileException("Invalid enemy count multiplier in repeat on line " + lineNumber);
+
+                if (!int.TryParse(tokens[4], out int enemyCountAdd))
+                    throw new ConfigFileException("Invalid enemy count addition in repeat on line " + lineNumber);
+
+                if (items.Count > 0)
+                {
+                    waves.Add(new RepeatWave(items.ToArray(), enemyHPmult, enemyHPadd, enemyCountMult, enemyCountAdd));
+                }
+                items.Clear();
+                continue;
+            }
 
             WaveItem item = ParseWaveItem(tokens, lineNumber + 1);
             items.Add(item);

@@ -7,11 +7,52 @@ using UnityEngine;
 /// </summary>
 public class Wave
 {
-    public WaveItem[] WaveItems;
+    virtual public WaveItem[] WaveItems { get; private set; }
 
     public Wave(WaveItem[] waveItems)
     {
         WaveItems = waveItems;
+    }
+
+    /// <summary>
+    /// Called before the wave gets spawned, no function in basic wave
+    /// </summary>
+    public virtual void Initialize() { }
+}
+
+/// <summary>
+/// Wave of enemies which gets modified every time 
+/// </summary>
+public class RepeatWave : Wave
+{
+    public override WaveItem[] WaveItems {
+        get => waveItems;
+    }
+
+    private WaveItem[] waveItems;
+    private readonly float enemyHPmult;
+    private readonly int enemyHPadd;
+    private readonly float enemyCountMult;
+    private readonly int enemyCountAdd;
+
+    public RepeatWave(WaveItem[] waveItems, float enemyHPmult, int enemyHPadd, float enemyCountMult, int enemyCountAdd) : base(waveItems)
+    {
+        this.waveItems = waveItems;
+        this.enemyHPmult = enemyHPmult;
+        this.enemyHPadd = enemyHPadd;
+        this.enemyCountMult = enemyCountMult;
+        this.enemyCountAdd = enemyCountAdd;
+    }
+
+    public override void Initialize()
+    {
+        for (int i = 0; i < waveItems.Length; i++)
+        {
+            waveItems[i].Count = Mathf.RoundToInt(enemyCountMult * waveItems[i].Count);
+            waveItems[i].Count += enemyCountAdd;
+            waveItems[i].EnemyHealth = Mathf.RoundToInt(enemyHPmult * waveItems[i].EnemyHealth);
+            waveItems[i].EnemyHealth += enemyHPadd;
+        }
     }
 }
 

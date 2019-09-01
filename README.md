@@ -81,3 +81,11 @@ wave 1
 5, 1, 0, 50, 10, 1
 1, 2, 0, 5, 10, 0.5, 3
 ```
+Last line of the file can contain keyword `repeat`. This makes the last wave repeating, so the number of waves is infinite. Wave will get modified before each spawn, so it can get stronger over time. To modify the wave, you must specify the repeat line in following format: `repeat, enemy HP mult, enemy HP add, enemy count mult, enemy count add`. The HP and counts of all batches of enemies in the wave will first get multiplied by the defined "mult" constant (float) and than the "add" constant gets added to the number. 
+
+In this example, the first spawn of this wave will have 10 enemies each with 10 HP. The second time it gets spawned, it will have 15 enemies with 10*1.1 + 2 = 13 HP.
+```
+wave 1
+0, 1, 0, 10, 50, 1, 10
+repeat,1.1,2,1,5 
+```

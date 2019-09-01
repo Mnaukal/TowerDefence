@@ -21,13 +21,13 @@ public class WaveController : MonoBehaviour
     private void RaiseWaveStarted()
     {
         if (WaveStarted != null)
-            WaveStarted(this, new WaveEventArgs(waveIndex, enemiesInWave)); 
+            WaveStarted(this, new WaveEventArgs(waveNumber, enemiesInWave)); 
     }
 
     private void RaiseWaveFinished()
     {
         if (WaveFinished != null)
-            WaveFinished(this, new WaveEventArgs(waveIndex, enemiesInWave)); 
+            WaveFinished(this, new WaveEventArgs(waveNumber, enemiesInWave)); 
     }
     #endregion
 
@@ -41,6 +41,7 @@ public class WaveController : MonoBehaviour
     public Enemy[] enemyTypes;
 
     private int waveIndex = -1;
+    private int waveNumber = -1;
     private int enemiesInWave;
     private int enemiesRemaining;
 
@@ -50,11 +51,19 @@ public class WaveController : MonoBehaviour
     public void SpawnNextWave()
     {
         waveIndex++;
+        waveNumber++;
         if (waveIndex >= waves.Length)
         {
-            GameControllerS.I.Victory();
-            return;
+            if (waves[waves.Length - 1] is RepeatWave)
+                waveIndex = waves.Length - 1;
+            else
+            {
+                GameControllerS.I.Victory();
+                return;
+            }
         }
+
+        waves[waveIndex].Initialize();
 
         enemiesInWave = waves[waveIndex].WaveItems.Sum(w => w.Count);
         enemiesRemaining = enemiesInWave;
