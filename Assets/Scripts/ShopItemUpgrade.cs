@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Represents one button in shop (for buying one type of upgrade)
+/// </summary>
 public class ShopItemUpgrade : MonoBehaviour
 {
     [Header("UI objects links")]
@@ -25,6 +28,9 @@ public class ShopItemUpgrade : MonoBehaviour
         GameControllerS.I.MoneyBalanceUpdated += MoneyBalanceUpdated;
     }
 
+    /// <summary>
+    /// Hides button in shop.
+    /// </summary>
     public void ClearUI()
     {
         Text_Name.text = "";
@@ -51,17 +57,20 @@ public class ShopItemUpgrade : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public void HideButton()
+    private void HideButton()
     {
         gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Hide upgrade buttons when Tower is deselected. Hook this to TowerDeselected event of Tower
+    /// </summary>
     public void HideWhenTowerDeselected(object sender, TowerEventArgs args)
     {
-        HideButton();
+        ClearUI();
     }
 
-    private void OnEnable()
+    private void OnEnable() // Unity method which gets called when GameObject is enabled
     {
         MoneyBalanceUpdated(this, new MoneyBalanceUpdatedEventArgs(GameControllerS.I.Money, GameControllerS.I.Money));
     }

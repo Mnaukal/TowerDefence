@@ -15,12 +15,14 @@ public class Enemy : MonoBehaviour
     /// Money player gets when towers kill this enemy
     /// </summary>
     public int Reward = 1;
+
     // Private links to other objects
     [SerializeField]
     private Healthbar Healthbar;
     [SerializeField]
     private Transform Sprite;
     private Path path;
+
     // Private variables
     /// <summary>
     /// At which segment of path the enemy currently is
@@ -160,6 +162,7 @@ public class Enemy : MonoBehaviour
     /// <summary>
     /// Got hit by projectile
     /// </summary>
+    /// <remarks>Method is public, so it can be called from Projectiles which don't participate in collisions (trigger colliders)</remarks>
     public void CollisionEnterProjectile(Projectile p)
     {
         Hit(p.DamageEnemy(this), p.transform.position);

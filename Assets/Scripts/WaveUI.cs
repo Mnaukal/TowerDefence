@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controls UI which shows current wave number and starts next wave
+/// </summary>
 public class WaveUI : MonoBehaviour
 {
     [SerializeField]

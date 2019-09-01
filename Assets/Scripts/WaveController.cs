@@ -6,7 +6,7 @@ using System.Linq;
 /// <summary>
 /// Class for spawning waves of enemies
 /// </summary>
-public partial class WaveController : MonoBehaviour
+public class WaveController : MonoBehaviour
 {
     #region Events
     /// <summary>
@@ -31,6 +31,14 @@ public partial class WaveController : MonoBehaviour
     }
     #endregion
 
+    /// <summary>
+    /// List of waves of enemies
+    /// </summary>
+    public Wave[] waves;
+    /// <summary>
+    /// Available types of enemies (can be further modified - speed, HP,...)
+    /// </summary>
+    public Enemy[] enemyTypes;
 
     private int waveIndex = -1;
     private int enemiesInWave;

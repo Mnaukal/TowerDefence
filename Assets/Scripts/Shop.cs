@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Script for controlling the UI of shop
+/// </summary>
 public class Shop : MonoBehaviour
 {
     [SerializeField]
@@ -12,6 +15,9 @@ public class Shop : MonoBehaviour
 
     [SerializeField]
     private TowerPlacer towerPlacer;
+    /// <summary>
+    /// Reference to TowerPlacer Prefab
+    /// </summary>
     public TowerPlacer TowerPlacer => towerPlacer;
     /// <summary>
     /// Used to disable right panel buttons when placing Tower
@@ -19,7 +25,7 @@ public class Shop : MonoBehaviour
     [SerializeField]
     private GameObject rightPanelOverlay;
     
-    [Header("TowerInfo")]
+    [Header("TowerInfo")] // for displaying information about selected Tower
     [SerializeField]
     private Text Tower_Name;
     [SerializeField]
@@ -31,7 +37,7 @@ public class Shop : MonoBehaviour
     }
 
     /// <summary>
-    /// shows information about Tower in shop UI
+    /// Shows information about Tower in shop UI. Should be called when Tower gets selected.
     /// </summary>
     public void LoadTowerInfo(Tower tower)
     {
@@ -49,6 +55,9 @@ public class Shop : MonoBehaviour
         LoadUpgrades(tower);
     }
 
+    /// <summary>
+    /// Clears Tower info UI objects. Should be hooked to TowerDeselected event of Tower.
+    /// </summary>
     public void HideTowerInfoWhenTowerDeselected(object sender, TowerEventArgs args)
     {
         Tower_Name.enabled = false;

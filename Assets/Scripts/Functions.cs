@@ -4,6 +4,9 @@ using UnityEngine;
 using System.Linq;
 using System;
 
+/// <summary>
+/// Common functions
+/// </summary>
 public static class Functions
 {
     /// <summary>

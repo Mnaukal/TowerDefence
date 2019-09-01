@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This projectile slows down the Enemy
+/// </summary>
 public class ProjectileSlowing : Projectile
 {
     [SerializeField]

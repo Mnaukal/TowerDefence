@@ -166,7 +166,10 @@ public abstract class Tower : MonoBehaviour
         RaiseTowerDeselected();
     }
 
-    public void ModifyProjectile(UpgradeFunctionProjectile upgradeFunction)
+    /// <summary>
+    /// Allows modification of Projectile which this Tower shoots. Creates a copy of Projectile, so it gets modified only for this Tower (not all Towers of same type)
+    /// </summary>
+    public void ModifyProjectile(ProjectileModificationFunction upgradeFunction)
     {
         Projectile p = (Projectile)Instantiate(Projectile);
         upgradeFunction(p);

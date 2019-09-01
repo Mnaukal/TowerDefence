@@ -38,6 +38,10 @@ public class ConfiguraionLoader : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Creates coroutine for loading text file from StreamingAssets folder and runs parser on the file
+    /// </summary>
+    /// <returns>Coroutine which must be started in order to start loading</returns>
     IEnumerator LoadStreamingAsset(string filename, System.Action<string> parser)
     {
         string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, filename);

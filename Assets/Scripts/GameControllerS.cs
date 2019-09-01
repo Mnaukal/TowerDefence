@@ -91,14 +91,14 @@ public class GameControllerS : MonoBehaviour
     [SerializeField]
     private GameObject gameOverScreen;
     /// <summary>
-    /// Path along which the enemies walk
+    /// UI to show when player looses
     /// </summary>
     public GameObject GameOverScreen => gameOverScreen;
 
     [SerializeField]
     private GameObject victoryScreen;
     /// <summary>
-    /// Path along which the enemies walk
+    /// UI to show when player wins
     /// </summary>
     public GameObject VictoryScreen => victoryScreen;
     #endregion
@@ -178,6 +178,9 @@ public class GameControllerS : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Subtracts live from player. Hook this to EnemyFinished event of each created Enemy.
+    /// </summary>
     public void EnemyFinished(object sender, EnemyEventArgs args)
     {
         Debug.Log("Enemy finished: " + args.enemy);
@@ -187,6 +190,11 @@ public class GameControllerS : MonoBehaviour
             GameOver();
     }
 
+    /// <summary>
+    /// Adds reward for killing enemy. Hook this to EnemyKilled event of each created Enemy.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
     public void EnemyKilledReward(object sender, EnemyEventArgs args)
     {
         Debug.Log("Enemy killed: " + args.enemy);

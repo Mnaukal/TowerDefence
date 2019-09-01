@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Explosion : Projectile
 {
+    /// <summary>
+    /// Which enemy should not be damaged by Explosion (usually the one which got hit by the Projectile creating this Explosion)
+    /// </summary>
     public Enemy DontDamage;
 
     public void StartGrow(float targetSize)

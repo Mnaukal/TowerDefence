@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// UI for showing Money balance and player's Lives
+/// </summary>
 public class GameInfoUI : MonoBehaviour
 {
 

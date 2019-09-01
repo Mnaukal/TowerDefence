@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Slows down a enemy
+/// Slows down an Enemy
 /// </summary>
 public class Slowdown : MonoBehaviour
 {

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Represents one button in shop (for buying one type of Tower)
+/// </summary>
 public class ShopItemTower : MonoBehaviour
 {
     [Header("Tower Parameters")]
@@ -24,6 +27,9 @@ public class ShopItemTower : MonoBehaviour
         GameControllerS.I.MoneyBalanceUpdated += MoneyBalanceUpdated;
     }
 
+    /// <summary>
+    /// Displays Tower name, cost,...
+    /// </summary>
     public void SetupShopUI()
     {
         Text_Name.text = TowerName;
@@ -34,6 +40,9 @@ public class ShopItemTower : MonoBehaviour
         Tower.name = TowerName;
     }
 
+    /// <summary>
+    /// Update if player has enough money to buy the Tower
+    /// </summary>
     private void MoneyBalanceUpdated(object sender, MoneyBalanceUpdatedEventArgs args)
     {
         if (args.NewBalance >= Cost)
