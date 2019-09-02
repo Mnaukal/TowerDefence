@@ -96,10 +96,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 1
+  DistanceEpsilon: 0.3
   Slowdown: {fileID: 3282973686460033834, guid: 08392f2b2b41e5e498f1222b0626bcae,
     type: 3}
-  slowAmount: 0.5
-  slowTime: 3
+  slowAmount: 0.8
+  slowTime: 1
 --- !u!61 &6325115199245507769
 BoxCollider2D:
   m_ObjectHideFlags: 0

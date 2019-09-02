@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 /// <summary>
 /// Base class for enemies
@@ -94,8 +95,20 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        if(!waiting)
+        if (!waiting)
             MoveEnemy();
+        else
+            CheckWaiting();
+    }
+
+    /// <summary>
+    /// Checks if enemy should still be waiting, because when the other enemy we are waiting for dies, it doesn't trigger the OnCollisionExit2D
+    /// </summary>
+    private void CheckWaiting()
+    {
+        if (waitingFor.Any(x => x == null))
+            CollisionExitEnemy(null);
+        
     }
 
     /// <summary>
@@ -204,7 +217,7 @@ public class Enemy : MonoBehaviour
 
     private void CollisionExitEnemy(Enemy e)
     {
-        waitingFor.Remove(e);
+        waitingFor.RemoveAll(x => x == e);
         if (waitingFor.Count == 0)
             waiting = false;
     }

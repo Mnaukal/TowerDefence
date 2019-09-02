@@ -22,7 +22,7 @@ This Tower has really big range and damage. But it has low fire rate and shoots 
 Projectiles from this Tower slow down the enemy which got hit. Other enemies behind it can't overtake the slowed enemy, so they can also get slowed. 
 
 ### Bomb Tower
-Shoots exploding projectiles. The explosion also damages other nearby enemies.
+Shoots exploding projectiles. The explosion also damages other nearby enemies. This Tower shoots on random enemy in range.
 
 ## Upgrades
 All Towers can be upgraded. Select the Tower by clicking on it and buttons with available upgrades will appear in the shop. Each type of Tower has it's own upgrades.

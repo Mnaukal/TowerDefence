@@ -178,8 +178,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TowerTypeIndex: 2
   ReloadTime: 5
-  Range: 8
-  Damage: 3
+  Range: 5
+  Damage: 15
   UpgradeLevels: 
   Projectile: {fileID: 6850031420888224678, guid: 44bd0ec4ced0efb44ac85e262c795276,
     type: 3}
